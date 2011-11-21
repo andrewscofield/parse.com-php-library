@@ -248,9 +248,6 @@ class parseRestClient{
 		if(isset($args['query'])){
 			$params['query'] = $args['query'];
 		}
-		else{
-			die('you should use the get method if you are not inluding a query');
-		}
 		if(isset($args['order'])){
 			$params['order'] = $args['order'];
 		}
