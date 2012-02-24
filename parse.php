@@ -131,7 +131,7 @@ class parseRestClient{
 		curl_setopt($c, CURLOPT_URL, $this->parseUrl . $args['url']);
 		
 		if($args['method'] == 'PUT' || $args['method'] == "POST"){
-			$postData = json_encode($args['payload']);
+			$postData = json_encode($args['payload'], JSON_NUMERIC_CHECK);
 			curl_setopt($c, CURLOPT_POSTFIELDS, $postData );
 		}
 		else{
