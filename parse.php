@@ -1,113 +1,20 @@
-<?php 
-/**
-Library to use parse.com rest API.
-
- Some examples on how to use:
-
- //
- // CREATE OBJECT
- // 
- 
-  	$parse = new parseRestClient(array(
-		'appid' => 'YOUR APPLICATION ID',
-		'masterkey' => 'YOUR MASTER KEY ID'
-	));
-  
-
- //
- // CREATE EXAMPLE
- // 
-	$params = array(
-		'className' => 'gameScore',
-		'object' => array(
-			'score' => 500,
-			'name' => 'Andrew Scofield'
-		)
-	);
-	
-	$request = $parse->create($params);
-
-  
- // 
- // GET EXAMPLE
- //  
- 
-	$params = array(
-		'className' => 'gameScore',
- 		'objectId' => 'Ed1nuqPvcm'
-	);
-	
-	$request = $parse->get($params);
-  
-  
- // 
- //QUERY EXAMPLE
- //
-	
-	$params = array(
-		'className' => 'gameScore',
-		'query' => array(
-			'score'=> array(
-				'$gt' => 500
-			) 
-		),
-		'order' => '-score',
-		'limit' => '2',
-		'skip' => '2'
-	);
-	
-	$request = $parse->query($params);
- 
-  
- // 
- // UPDATE EXAMPLE
- //  
- 
-	$params = array(
-		'className' => 'gameScore',
- 		'objectId' => 'Ed1nuqPvcm',
-		'object' => array(
-			'score' => 500,
-			'name' => 'Andrew Scofield'
-		)
-	);
-	
-	$request = $parse->update($params);
-  
-  
- // 
- // DELETE EXAMPLE
- //  
- 
-	$params = array(
-		'className' => 'gameScore',
- 		'objectId' => 'Ed1nuqPvcm',
-	);
-	
-	$request = $parse->delete($params);
-  
-  
- *  * 
- * 
- */
-
-
+<?
 class parseRestClient{
 	
 	private $appid = '';
-	private $masterkey = '';
+	private $restkey = '';
 	private $parseUrl = 'https://api.parse.com/1/classes/';
 
 
 /**
  * When creating a new parseRestClient object
- * send array with 'masterkey' and 'appid'
+ * send array with 'restkey' and 'appid'
  * 
  */
 	public function __construct($config){
-		if(isset($config['appid']) && isset($config['masterkey'])){
+		if(isset($config['appid']) && isset($config['restkey'])){
 			$this->appid = $config['appid'];
-			$this->masterkey = $config['masterkey'];			
+			$this->restkey = $config['restkey'];			
 		}
 		else{
 			die('You must include your Application Id and Master Key');
@@ -125,13 +32,16 @@ class parseRestClient{
 		curl_setopt($c, CURLOPT_TIMEOUT, 5);
 		curl_setopt($c, CURLOPT_USERAGENT, 'parseRestClient/1.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($c, CURLOPT_USERPWD,  $this->appid . ':' . $this->masterkey);
-		curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($c, CURLOPT_HTTPHEADER, array(
+			'Content-Type: application/json',
+			'X-Parse-Application-Id: '.$this->appid,
+			'X-Parse-REST-API-Key: '.$this->restkey
+		));
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
 		curl_setopt($c, CURLOPT_URL, $this->parseUrl . $args['url']);
 		
 		if($args['method'] == 'PUT' || $args['method'] == "POST"){
-			$postData = json_encode($args['payload'], JSON_NUMERIC_CHECK);
+			$postData = json_encode($args['payload']);
 			curl_setopt($c, CURLOPT_POSTFIELDS, $postData );
 		}
 		else{
@@ -149,10 +59,7 @@ class parseRestClient{
 				$postData['skip'] = $args['skip'];
 			}
 			if(count($postData) > 0){
-				$query = "";
-				foreach ($postData as $key => $value) {
-					$query .= '&'.$key.'='.$value;
-				}
+				$query = http_build_query($postData, '', '&');
 				curl_setopt($c, CURLOPT_URL, $this->parseUrl . $args['url'].'?'.$query);
 			}
 							
@@ -298,7 +205,8 @@ class parseRestClient{
 	private function checkResponse($return,$code){
 		//TODO: Need to also check for response for a correct result from parse.com
 		if($return['code'] != $code){
-			die('failed to get response '.$code.', response code was: '.$return['code']);
+			$error = json_decode($return['response']);
+			die('ERROR: response code was '.$return['code'].' with message: '.$error->error);
 		}
 		else{
 			return $return['response'];
