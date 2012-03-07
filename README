@@ -2,9 +2,14 @@ PHP parse.com API library
 ===========================
 More on the parse.com api here: https://www.parse.com/docs/rest
 
-Authentication Fixed
------------
-The authentication method was recently change, a fix has been made on this library.
+### Authentication Fixed ###
+The authentication method was recently change on parse's api, a fix has been made on this library.
+
+### Breaking change in recent commit ###
+In order to be consistent with parse's terminology I've changed the variable from $masterkey to $restkey
+When creating a new instance, use 'restkey' in your array now instead of 'masterkey'
+
+
 
 
 **Please note**
@@ -20,7 +25,7 @@ CREATE OBJECT
 ```
 $parse = new parseRestClient(array(
 	'appid' => 'YOUR APPLICATION ID',
-	'masterkey' => 'YOUR MASTER KEY ID'
+	'restkey' => 'YOUR REST KEY ID'
 ));
 ```
 
