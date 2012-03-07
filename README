@@ -1,89 +1,99 @@
-Library to use parse.com rest API. 
-More on the api here: https://www.parse.com/docs/rest
+PHP parse.com API library
+===========================
+More on the parse.com api here: https://www.parse.com/docs/rest
+
+Authentication Fixed
+-----------
+The authentication method was recently change, a fix has been made on this library.
+
+
+**Please note**
+I am working to keep up with their rapidly growing API, please submit any issues you may find. I'll work my best at keep this library up to date. If you are able to send pull requests my way!
+
+
 
 Some examples on how to use this library:
 
+CREATE OBJECT
+--------------
 
- //
- // CREATE OBJECT
- // 
- 
-  	$parse = new parseRestClient(array(
-		'appid' => 'YOUR APPLICATION ID',
-		'masterkey' => 'YOUR MASTER KEY ID'
-	));
-  
+```
+$parse = new parseRestClient(array(
+	'appid' => 'YOUR APPLICATION ID',
+	'masterkey' => 'YOUR MASTER KEY ID'
+));
+```
 
- //
- // CREATE EXAMPLE
- // 
-	$params = array(
-		'className' => 'gameScore',
-		'object' => array(
-			'score' => 500,
-			'name' => 'Andrew Scofield'
-		)
-	);
-	
-	$request = $parse->create($params);
+CREATE EXAMPLE
+----------------
 
-  
- // 
- // GET EXAMPLE
- //  
- 
-	$params = array(
-		'className' => 'gameScore',
- 		'objectId' => 'Ed1nuqPvcm'
-	);
-	
-	$request = $parse->get($params);
-  
-  
- // 
- //QUERY EXAMPLE
- //
-	
-	$params = array(
-		'className' => 'gameScore',
-		'query' => array(
-			'score'=> array(
-				'$gt' => 500
-			) 
-		),
-		'order' => '-score',
-		'limit' => '2',
-		'skip' => '2'
-	);
-	
-	$request = $parse->query($params);
- 
-  
- // 
- // UPDATE EXAMPLE
- //  
- 
-	$params = array(
-		'className' => 'gameScore',
- 		'objectId' => 'Ed1nuqPvcm',
-		'object' => array(
-			'score' => 500,
-			'name' => 'Andrew Scofield'
-		)
-	);
-	
-	$request = $parse->update($params);
-  
-  
- // 
- // DELETE EXAMPLE
- //  
- 
-	$params = array(
-		'className' => 'gameScore',
- 		'objectId' => 'Ed1nuqPvcm',
-	);
-	
-	$request = $parse->delete($params);
- 
+```
+$params = array(
+    'className' => 'gameScore',
+    'object' => array(
+    	'score' => 500,
+    	'name' => 'Andrew Scofield'
+    )
+);
 
+$request = $parse->create($params);
+```
+  
+GET EXAMPLE
+------------
+
+ ```
+$params = array(
+    'className' => 'gameScore',
+    'objectId' => 'Ed1nuqPvcm'
+);
+
+$request = $parse->get($params);
+```
+
+QUERY EXAMPLE
+--------------
+
+```
+$params = array(
+    'className' => 'gameScore',
+    'query' => array(
+    	'score'=> array(
+    		'$gt' => 500
+    	) 
+    ),
+    'order' => '-score',
+    'limit' => '2',
+    'skip' => '2'
+);
+
+$request = $parse->query($params);
+```
+
+UPDATE EXAMPLE
+---------------
+
+```
+$params = array(
+    'className' => 'gameScore',
+    'objectId' => 'Ed1nuqPvcm',
+    'object' => array(
+    	'score' => 500,
+    	'name' => 'Andrew Scofield'
+    )
+);
+
+$request = $parse->update($params);
+```  
+
+DELETE EXAMPLE
+----------------
+
+```
+$params = array(
+    'className' => 'gameScore',
+    'objectId' => 'Ed1nuqPvcm',
+);
+
+$request = $parse->delete($params); 
+```
