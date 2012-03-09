@@ -1,8 +1,8 @@
 <?
 class parseRestClient{
 	
-	private $appid = 'ZpjpXHB8ZbLIFEoQALDeAl72uo1AfJ8qgum5TCVM';
-	private $restkey = 'yAWvUgJGq1yQ9nv4EF6xIhaKHqBq4HHyu1i2CiGe';
+	private $appid = 'APP ID HERE';
+	private $restkey = 'REST KEY HERE';
 	private $parseUrl = 'https://api.parse.com/1/classes/';
 	private $pushUrl = 'https://api.parse.com/1/';
 
