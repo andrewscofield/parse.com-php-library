@@ -1,9 +1,10 @@
 <?
 class parseRestClient{
 	
-	private $appid = '';
-	private $restkey = '';
+	private $appid = 'ZpjpXHB8ZbLIFEoQALDeAl72uo1AfJ8qgum5TCVM';
+	private $restkey = 'yAWvUgJGq1yQ9nv4EF6xIhaKHqBq4HHyu1i2CiGe';
 	private $parseUrl = 'https://api.parse.com/1/classes/';
+	private $pushUrl = 'https://api.parse.com/1/';
 
 
 /**
@@ -38,7 +39,12 @@ class parseRestClient{
 			'X-Parse-REST-API-Key: '.$this->restkey
 		));
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
+		
+		if($args['url'] == "push") {
+		curl_setopt($c, CURLOPT_URL, $this->pushUrl . $args['url']);
+		} else {
 		curl_setopt($c, CURLOPT_URL, $this->parseUrl . $args['url']);
+		}
 		
 		if($args['method'] == 'PUT' || $args['method'] == "POST"){
 			$postData = json_encode($args['payload']);
@@ -71,7 +77,17 @@ class parseRestClient{
 		return array('code'=>$httpCode, 'response'=>$response);
 	}
 
-	
+	/*
+ * Used to create a parse.com object  
+ * 
+ * @param array $args - argument hash:
+ * 
+ * className: string of className
+ * object: object to create
+ * 
+ * @return string $return
+ * 
+ */
 	public function create($args){
 		$params = array(
 			'url' => $args['className'],
@@ -84,6 +100,31 @@ class parseRestClient{
 		return $this->checkResponse($return,'201');
 		
 	}	
+
+	/*
+ * Used to send a push notification  
+ * 
+ * @param array $args - argument hash:
+ * 
+ * push: leave this alone
+ * object: notification details
+ * 
+ * @return string $return
+ * 
+ */
+	public function notification($args){
+		$params = array(
+			'url' => 'push',
+			'method' => 'POST',
+			'payload' => $args['object']
+		);
+		
+		$return = $this->request($params);
+
+		return $this->checkResponse($return,'201');
+		
+	}	
+
 
 /*
  * Used to get a parse.com object  
