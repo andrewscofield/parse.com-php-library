@@ -62,10 +62,12 @@ QUERY EXAMPLE
 ```
 $params = array(
     'className' => 'gameScore',
-    'query' => array(
-    	'score'=> array(
-    		'$gt' => 500
-    	) 
+    'object' => array(
+        'query' => array(
+    	    'score'=> array(
+    		    '$gt' => 500
+    	    ) 
+        ),
     ),
     'order' => '-score',
     'limit' => '2',
@@ -102,3 +104,4 @@ $params = array(
 
 $request = $parse->delete($params); 
 ```
+
