@@ -2,6 +2,7 @@
 
 class parseObject extends parseRestClient{
 	public $_includes = array();
+	private $_className = '';
 
 	public function __construct($class=''){
 		if($class != ''){
@@ -15,7 +16,9 @@ class parseObject extends parseRestClient{
 	}
 
 	public function __set($name,$value){
-		 $this->_data[$name] = $value;
+		if($name != '_className'){
+			$this->_data[$name] = $value;
+		}
 	}
 
 	public function save(){
@@ -23,7 +26,7 @@ class parseObject extends parseRestClient{
 			$request = $this->request(array(
 				'method' => 'POST',
 				'requestUrl' => 'classes/'.$this->_className,
-				'object' => $this->_data,
+				'data' => $this->_data,
 			));
 			return $request;
 		}
@@ -33,7 +36,7 @@ class parseObject extends parseRestClient{
 		if($this->_className != '' || !empty($id)){
 			$request = $this->request(array(
 				'method' => 'GET',
-				'url' => 'classes/'.$this->_className.'/'.$id
+				'requestUrl' => 'classes/'.$this->_className.'/'.$id
 			));
 			
 			if(!empty($this->_includes)){
@@ -48,7 +51,7 @@ class parseObject extends parseRestClient{
 		if($this->_className != '' || !empty($id)){
 			$request = $this->request(array(
 				'method' => 'DELETE',
-				'url' => 'classes/'.$this->_className.'/'.$id
+				'requestUrl' => 'classes/'.$this->_className.'/'.$id
 			));
 
 			return $request;

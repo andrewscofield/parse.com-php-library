@@ -16,6 +16,11 @@ class parseGeoPoint extends parseRestClient{
 		return json_encode($this->location);
 
 	}
+	
+	public function get(){		
+		return json_encode($this->location);
+
+	}	
 
 }
 

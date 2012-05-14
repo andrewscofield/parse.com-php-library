@@ -19,6 +19,7 @@ class parseObjectTest extends \Enhance\TestFixture {
 	}
 
 	public function getWithObjectIdExpectTest1(){
+		$parseObject = $this->parseObject;
 		$parseObject->testfield2 = $this->testfield2;
 		$save = $parseObject->save();
 
@@ -28,6 +29,7 @@ class parseObjectTest extends \Enhance\TestFixture {
 	}
 	
 	public function deleteWithObjectIdExpectEmpty(){
+		$parseObject = $this->parseObject;
 		$parseObject->testfield1 = $this->testfield2;
 		$save = $parseObject->save();
 

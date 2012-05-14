@@ -20,10 +20,10 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseObject2->name = 'Bar';
 		$parseObject2->mode = 'nocheat';
 		$parseObject2->phone = '555-555-1234';
-		$parseObject2->object1 = $this->dataType('pointer', array('test',$this->parseObject->objectId));
+		$parseObject2->object1 = $parseObject2->dataType('pointer', array('test',$this->parseObject->objectId));
 		$this->parseObject2 = $parseObject2->save();
 
-		$this->parseQuery = \Enhance\Core::getCodeCoverageWrapper('parseQuery', array('testClass'));
+		$this->parseQuery = \Enhance\Core::getCodeCoverageWrapper('parseQuery', array('test'));
 		$this->parseQueryUser = \Enhance\Core::getCodeCoverageWrapper('parseQuery', array('users'));
 		
 	}
@@ -33,7 +33,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->where('name','Foo');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithNameNotExpectResults(){
@@ -41,7 +41,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereNotEqualTo('name','Foo');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithScoreGreaterExpectResults(){
@@ -49,7 +49,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereGreaterThan('score',1500);
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithScoreLessExpectResults(){
@@ -57,7 +57,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereLessThan('score',1500);
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithScoreGreaterOrEqualExpectResults(){
@@ -65,7 +65,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereGreaterThanOrEqualTo('score',1111);
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithScoreLessOrEqualExpectResults(){
@@ -73,23 +73,23 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereLessThanOrEqualTo('score',1111);
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithModeContainedInExpectResults(){
 		$parseQuery = $this->parseQuery;
-		$parseQuery->whereContainerIn('mode','cheat');
+		$parseQuery->whereContainedIn('mode','cheat');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithNameNotContainedInExpectResults(){
 		$parseQuery = $this->parseQuery;
-		$parseQuery->whereNotContainerIn('name','foo');
+		$parseQuery->whereNotContainedIn('name','foo');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithScoreExistsExpectResults(){
@@ -97,7 +97,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereExists('score');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithScoreDoesNotExistExpectResults(){
@@ -105,7 +105,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereDoesNotExist('score');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithRegexExpectResults(){
@@ -113,7 +113,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseQuery->whereRegex('score','^\d{1,5}(\.\d{1,2})?$');
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithInQueryExpectResults(){
@@ -123,7 +123,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		)));
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	public function findWithNotInQueryExpectResults(){
@@ -133,7 +133,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 		)));
 		$return = $parseQuery->find();
 		
-		\Enhance\Assert::isTrue( is_array($return['results']) );
+		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
 	

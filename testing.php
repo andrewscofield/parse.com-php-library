@@ -1,8 +1,9 @@
 <?php
 require 'parse.php';
 
-$geopoint = new parseGeoPoint("40.10","-30.50");
+$return = new parseFile('text/plain','Working at Parse is great!');
+$save = $return->save('hello.txt');
 
-echo $geopoint;
+print_r($save);
 
 ?>

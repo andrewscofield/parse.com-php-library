@@ -4,6 +4,7 @@ include 'parseObject.php';
 include 'parseQuery.php';
 include 'parseUser.php';
 include 'parseFile.php';
+include 'parsePush.php';
 include 'parseGeoPoint.php';
 
 class parseRestClient{
@@ -13,8 +14,8 @@ class parseRestClient{
 	private $_restkey = '';
 	private $_parseurl = '';
 	
-	public $_data = array();
-	public $_requestUrl = '';
+	private $_data;
+	private $_requestUrl = '';
 
 	public function __construct(){
 		$parseConfig = new parseConfig;
@@ -31,27 +32,41 @@ class parseRestClient{
 	/*
 	 * All requests go through this function
 	 * 
-	 * 
+	 *
 	 */	
 	public function request($args){
+		$isFile = false;
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_TIMEOUT, 5);
 		curl_setopt($c, CURLOPT_USERAGENT, 'parseRestClient/2.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($c, CURLINFO_HEADER_OUT, true);
-		if(substr(($args['requestUrl'],0,5) == 'files'){
-			
+		if(substr($args['requestUrl'],0,5) == 'files'){
+			curl_setopt($c, CURLOPT_HTTPHEADER, array(
+				'Content-Type: '.$args['contentType'],
+				'X-Parse-Application-Id: '.$this->_appid,
+				'X-Parse-Master-Key: '.$this->_masterkey
+			));
+			$isFile = true;
 		}
-		curl_setopt($c, CURLOPT_HTTPHEADER, array(
-			'Content-Type: application/json',
-			'X-Parse-Application-Id: '.$this->_appid,
-			'X-Parse-REST-API-Key: '.$this->_restkey
-		));
+		else{
+			curl_setopt($c, CURLOPT_HTTPHEADER, array(
+				'Content-Type: application/json',
+				'X-Parse-Application-Id: '.$this->_appid,
+				'X-Parse-REST-API-Key: '.$this->_restkey
+			));	
+		}
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
 		$url = $this->_parseurl . $args['requestUrl'];
 		
 		if($args['method'] == 'PUT' || $args['method'] == 'POST'){
-			$postData = json_encode($args['object']);
+			if($isFile){
+				$postData = $args['data'];
+			}
+			else{
+				$postData = json_encode($args['data']);
+			}
+			
 			curl_setopt($c, CURLOPT_POSTFIELDS, $postData );
 		}
 		if(array_key_exists('urlParams',$args)){
@@ -65,110 +80,17 @@ class parseRestClient{
 		$responseCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 
 		$expectedCode = '200';
-		if($args['method'] == 'POST'){
+		if($args['method'] == 'POST' && substr($args['requestUrl'],0,4) != 'push'){
 			$expectedCode = '201';
 		}
-
+		
+		if($expectedCode != $responseCode){
+			print_r($response);
+			print_r($args);		
+		}
+		
 		return $this->checkResponse($response,$responseCode,$expectedCode);
 	}
-	
-	public function create($args){
-		$params = array(
-			'url' => $args['className'],
-			'method' => 'POST',
-			'object' => $args['object']
-		);
-
-		return $this->request($params);
-	}	
-
-/*
- * Used to retrieve a parse.com object  
- * 
- * @param array $args - argument hash:
- * 
- * className: string of className
- * objectId: (optional) the objectId of the object you want to update. If none, will return multiple objects from className
- * 
- * @return string $return
- * 
- */
-	public function retrieve($args){
-		$params = array(
-			'url' => $args['className'].'/'.$args['objectId'],
-			'method' => 'GET'
-		);
-		
-		return $this->request($params);
-	}
-
-/*
- * Used to update a parse.com object  
- * 
- * @param array $args - argument hash:
- * 
- * className: string of className
- * objectId: the objectId of the object you want to update
- * object: object to update in place of old one  
- * 
- * @return string $return
- * 
- */
-	public function update($args){
-		$params = array(
-			'url' => $args['className'].'/'.$args['objectId'],
-			'method' => 'PUT',
-			'object' => $args['object']
-		);
-		
-		return $this->request($params);
-	}
-
-/*
- * Used to query parse.com.  
- * 
- * @param array $args - argument hash:
- * 
- * className: string of className
- * query: array containing query. See: https://www.parse.com/docs/rest#data-querying 
- * order: (optional) used to sort by the field name. use a minus (-) before field name to reverse sort
- * limit: (optional) limit number of results
- * skip:  (optional) used to paginate results
- * 
- * @return string $return
- * 
- */
-
-	public function query($args){
-		$params = array(
-			'url' => $args['className'],
-			'method' => 'GET'
-		);
-		
-		return $this->request(array_merge($params,$args));
-	}
-
-/*
- * Used to delete a parse.com object  
- * 
- * @param array $args - argument hash:
- * 
- * className: string of className
- * objectId: (optional) the objectId of the object you want to update. If none, will return multiple objects from className
- * 
- * @return string $return
- * 
- */
-	public function delete($args){
-		$params = array(
-			'url' => $args['className'].'/'.$args['objectId'],
-			'method' => 'DELETE'
-		);
-		
-		return $this->request($params);
-	}	
-
-
 
 	public function dataType($type,$params){
 		if($type != ''){
@@ -199,6 +121,12 @@ class parseRestClient{
 						"longitude" => floatval($params[1])
 					);			
 					break;
+				case 'file':
+					$return = array(
+						"__type" => "File",
+						"name" => $params[0],
+					);			
+					break;
 				default:
 					$return = false;
 					break;	
@@ -208,14 +136,11 @@ class parseRestClient{
 		}	
 	}
 
-/*
- * Checks for correct/expected response code.
- * 
- * @param array $return, string $code 
- * 
- * @return string $return['response]
- * 
- */
+	
+	public function throwError($msg,$code=''){
+		trigger_error($msg.' '.$code,E_USER_WARNING);
+	}
+
 	private function checkResponse($response,$responseCode,$expectedCode){
 		//TODO: Need to also check for response for a correct result from parse.com
 		if($responseCode != $expectedCode){
@@ -231,10 +156,6 @@ class parseRestClient{
 				return json_decode($response);
 			}
 		}
-	}
-	
-	private function throwError($msg,$code=''){
-		die($msg.' '.$code);
 	}
 }
 

@@ -5,6 +5,7 @@ class parseQuery extends parseRestClient{
 	private $_skip = 0;
 	private $_order = array();
 	private $_query = array();
+	private $_include = array();
 
 	public function __construct($class=''){
 		if($class == 'users'){
@@ -24,7 +25,7 @@ class parseQuery extends parseRestClient{
 	public function find(){
 		$request = $this->request(array(
     		'method' => 'GET',
-    		'requestUrl' => $this->_className,
+    		'requestUrl' => $this->_requestUrl,
     		'urlParams' => array(
     			'query' => json_encode( $this->_query ),
     			'order' => implode(',',$this->_order),

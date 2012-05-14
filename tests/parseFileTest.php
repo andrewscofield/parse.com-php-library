@@ -6,16 +6,19 @@ class parseFileTest extends \Enhance\TestFixture {
 	}
 
 	public function saveExpectName(){
-		$return = \Enhance\Core::getCodeCoverageWrapper('parseFile', array('test.txt','Working at Parse is great!'));
+		$return = \Enhance\Core::getCodeCoverageWrapper('parseFile', array('text/plain','Working at Parse is great!'));
+		$save = $return->save('hello.txt');
 
-		\Enhance\Assert::isTrue( property_exists($return,'name') );
+		\Enhance\Assert::isTrue( property_exists($save,'name') );
 	}
 
 	public function deleteWithUrlExpectTrue(){
-		$file = new parseFile('test.txt','Working at Parse is great!');
+		$file = new parseFile('text/plain','Working at Parse is great!');
+		$save = $file->save('hello.txt');
 
-		$todelete = new parseFile();		
-		$return = $todelete->delete($file->name);
+		//SET BOTH ARGUMENTS BELOW TO FALSE, SINCE WE ARE DELETING A FILE, NOT SAVING ONE
+		$todelete = new parseFile('false', 'false');
+		$return = $todelete->delete($save->name);
 		
 		\Enhance\Assert::isTrue( $return );
 	}
