@@ -20,7 +20,7 @@ class parseRestClient
     if (isset($config['appid']) && (isset($config['masterkey']) || isset($config['restkey']))) {
       $this->appid      = $config['appid'];
       $this->restkey    = $config['restkey'];
-      $this->masterkey  = $config['masterKey'];
+      $this->masterkey  = $config['masterkey'];
     } else {
       die('You must include your Application Id and Master Key');
     }
