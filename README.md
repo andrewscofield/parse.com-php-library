@@ -25,9 +25,12 @@ CREATE OBJECT
 ```
 $parse = new parseRestClient(array(
 	'appid' => 'YOUR APPLICATION ID',
-	'restkey' => 'YOUR REST KEY ID'
+	'restkey' => 'YOUR REST KEY ID',  
+  'masterkey' => 'YOUR MASTER KEY', 
 ));
 ```
+If Master Key is provided, you can access your Parse data bypassing all [ACL](https://www.parse.com/docs/data#security-objects)s. 
+You can read more about REST API Key and Master Key HTTP Headers [here](https://www.parse.com/docs/rest#users-security).
 
 CREATE EXAMPLE
 ----------------
