@@ -121,7 +121,7 @@ class parseRestClient{
 		
 		$return = $this->request($params);
 
-		return $this->checkResponse($return,'201');
+		return $this->checkResponse($return,'200');
 		
 	}	
 
