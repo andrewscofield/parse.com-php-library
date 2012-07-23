@@ -5,13 +5,10 @@ class parseFile extends parseRestClient{
 	private $_fileName;
 	private $_contentType;
 
-	public function __construct($contentType,$data){
+	public function __construct($contentType='',$data=''){
 		if($contentType != '' && $data !=''){
 			$this->_contentType = $contentType;
-			$this->_data = $data;
-		}
-		else{
-			$this->throwError('When creating a parseFile object you must set the content-type and data');
+			$this->data = $data;
 		}
 		
 		parent::__construct();
@@ -19,12 +16,12 @@ class parseFile extends parseRestClient{
 	}
 
 	public function save($fileName){
-		if($fileName != '' && $this->_contentType != '' && $this->_data != ''){
+		if($fileName != '' && $this->_contentType != '' && $this->data != ''){
 			$request = $this->request(array(
 				'method' => 'POST',
 				'requestUrl' => 'files/'.$fileName,
 				'contentType' => $this->_contentType,
-				'data' => $this->_data,
+				'data' => $this->data,
 			));
 			return $request;
 		}

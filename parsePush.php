@@ -23,7 +23,7 @@ class parsePush extends parseRestClient{
 	
 	public function __set($name,$value){
 		if($name != 'channel' || $name != 'channels' || $name != 'expiration_time' || $name != 'expiration_time_interval' || $name != 'type' || $name != 'data'){
-			$this->_data[$name] = $value;
+			$this->data[$name] = $value;
 		}
 	}
 
@@ -43,7 +43,7 @@ class parsePush extends parseRestClient{
 
 		}
 		else{
-			if(count($this->_data) > 0){
+			if(count($this->data) > 0){
 				if($this->channel == '' && empty($this->channels)){
 					$this->throwError('No push channel has been set');
 				}
@@ -51,7 +51,7 @@ class parsePush extends parseRestClient{
 					'method' => 'POST',
 					'requestUrl' => 'push',
 					'data' => array(
-						'data' => $this->_data
+						'data' => $this->data
 					)
 				);
 				

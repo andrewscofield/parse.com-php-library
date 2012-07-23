@@ -17,7 +17,7 @@ class parseFileTest extends \Enhance\TestFixture {
 		$save = $file->save('hello.txt');
 
 		//SET BOTH ARGUMENTS BELOW TO FALSE, SINCE WE ARE DELETING A FILE, NOT SAVING ONE
-		$todelete = new parseFile('false', 'false');
+		$todelete = new parseFile;
 		$return = $todelete->delete($save->name);
 		
 		\Enhance\Assert::isTrue( $return );

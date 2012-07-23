@@ -13,9 +13,10 @@ class parseRestClient{
 	private $_masterkey = '';
 	private $_restkey = '';
 	private $_parseurl = '';
-	
-	private $_data;
-	private $_requestUrl = '';
+
+	public $data;
+	public $requestUrl = '';
+	public $returnData = '';
 
 	public function __construct(){
 		$parseConfig = new parseConfig;
@@ -38,7 +39,7 @@ class parseRestClient{
 		$isFile = false;
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_TIMEOUT, 5);
-		curl_setopt($c, CURLOPT_USERAGENT, 'parseRestClient/2.0');
+		curl_setopt($c, CURLOPT_USERAGENT, 'parse.com-php-library/2.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($c, CURLINFO_HEADER_OUT, true);
 		if(substr($args['requestUrl'],0,5) == 'files'){
@@ -48,6 +49,14 @@ class parseRestClient{
 				'X-Parse-Master-Key: '.$this->_masterkey
 			));
 			$isFile = true;
+		}
+		else if(substr($args['requestUrl'],0,5) == 'users' && isset($args['sessionToken'])){
+			curl_setopt($c, CURLOPT_HTTPHEADER, array(
+    			'Content-Type: application/json',
+    			'X-Parse-Application-Id: '.$this->_appid,
+    			'X-Parse-REST-API-Key: '.$this->_restkey,
+    			'X-Parse-Session-Token: '.$args['sessionToken']
+    		));
 		}
 		else{
 			curl_setopt($c, CURLOPT_HTTPHEADER, array(
@@ -63,19 +72,24 @@ class parseRestClient{
 			if($isFile){
 				$postData = $args['data'];
 			}
+			else if($args['requestUrl'] == 'login'){
+				$urlParams = http_build_query($args['data'], '', '&');
+	    		$url = $url.'?'.$urlParams;
+			}
 			else{
 				$postData = json_encode($args['data']);
 			}
 			
 			curl_setopt($c, CURLOPT_POSTFIELDS, $postData );
 		}
+
 		if(array_key_exists('urlParams',$args)){
 			$urlParams = http_build_query($args['urlParams'], '', '&');
     		$url = $url.'?'.$urlParams;
 		}
 
 		curl_setopt($c, CURLOPT_URL, $url);
-		
+
 		$response = curl_exec($c);
 		$responseCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 
@@ -85,8 +99,9 @@ class parseRestClient{
 		}
 		
 		if($expectedCode != $responseCode){
-			print_r($response);
-			print_r($args);		
+			//BELOW HELPS WITH DEBUGGING
+			//print_r($response);
+			//print_r($args);		
 		}
 		
 		return $this->checkResponse($response,$responseCode,$expectedCode);
@@ -136,7 +151,6 @@ class parseRestClient{
 		}	
 	}
 
-	
 	public function throwError($msg,$code=''){
 		trigger_error($msg.' '.$code,E_USER_WARNING);
 	}

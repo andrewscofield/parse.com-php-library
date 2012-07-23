@@ -78,7 +78,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 
 	public function findWithModeContainedInExpectResults(){
 		$parseQuery = $this->parseQuery;
-		$parseQuery->whereContainedIn('mode','cheat');
+		$parseQuery->whereContainedIn('mode',array('cheat','test','mode'));
 		$return = $parseQuery->find();
 		
 		\Enhance\Assert::isTrue( is_array($return->results) );
@@ -86,7 +86,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 
 	public function findWithNameNotContainedInExpectResults(){
 		$parseQuery = $this->parseQuery;
-		$parseQuery->whereNotContainedIn('name','foo');
+		$parseQuery->whereNotContainedIn('name',array('cheat','test','mode'));
 		$return = $parseQuery->find();
 		
 		\Enhance\Assert::isTrue( is_array($return->results) );
