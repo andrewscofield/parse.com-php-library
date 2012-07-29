@@ -95,6 +95,27 @@ $params = array(
 $request = $parse->query($params);
 ```
 
+RELATION QUERY EXAMPLE
+----------------------
+
+```
+$params = array(
+    'className' => 'User',
+    'query' => array(
+        '$relatedTo' => array(
+            'object' => array(
+                '__type' => 'Pointer',
+                'className' => 'Post',
+                'objectId' => $postId
+            ),
+            'key' => 'like'
+        )
+    )
+);
+
+$request = $parse->query($params);
+```
+
 UPDATE EXAMPLE
 ---------------
 
