@@ -151,15 +151,15 @@ class parseRestClient{
 		}	
 	}
 
-	public function throwError($msg,$code=''){
-		trigger_error($msg.' '.$code,E_USER_WARNING);
+	public function throwError($msg,$code=0){
+		throw new ParseLibraryException($msg,$code);
 	}
 
 	private function checkResponse($response,$responseCode,$expectedCode){
 		//TODO: Need to also check for response for a correct result from parse.com
 		if($responseCode != $expectedCode){
 			$error = json_decode($response);
-			$this->throwError('ERROR: response code was '.$responseCode.' with message: '.$error->error);
+			$this->throwError($error->error,$error->code);
 		}
 		else{
 			//check for empty return
@@ -173,5 +173,21 @@ class parseRestClient{
 	}
 }
 
+
+class ParseLibraryException extends Exception{
+	public function __construct($message, $code = 0, Exception $previous = null) {
+		//codes are only set by a parse.com error
+		if($code != 0){
+			$message = "parse code: ".$message;
+		}
+
+		parent::__construct($message, $code, $previous);
+	}
+
+	public function __toString() {
+		return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+	}
+
+}
 
 ?>

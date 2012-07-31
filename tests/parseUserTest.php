@@ -44,7 +44,7 @@ class parseUserTest extends \Enhance\TestFixture {
 		\Enhance\Assert::isTrue( property_exists($return,'objectId') );
 		
 	}
-/*
+
 	public function loginWithUsernameAndPasswordExpectObjectId(){
 		$parseUser = $this->parseUser;
 		$parseUser->username = $this->testUser['username'];
@@ -63,7 +63,7 @@ class parseUserTest extends \Enhance\TestFixture {
 
 		\Enhance\Assert::isTrue( property_exists($returnLogin,'objectId') );
 	}
-*/
+
 	public function getUserWithObjectIdExpectUsername(){
 		$testUser = new parseUser;
 		$testUser->username = $this->testUser['username'];

@@ -9,7 +9,7 @@ include_once 'parse.php';
 //include_once 'tests/parseFileTest.php';
 //include_once 'tests/parsePushTest.php';
 //include_once 'tests/parseGeoPointTest.php';
-//\Enhance\Core::discoverTests('tests/');
+\Enhance\Core::discoverTests('tests/');
 
 \Enhance\Core::runTests();
 
