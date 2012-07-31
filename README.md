@@ -17,9 +17,11 @@ Let me know what you think and suggestions and ideas
 SETUP
 =========================
 
-** Instructions ** after cloning this repository you have to create a file in the root of it called ** parseConfig.php **
+**Instructions** after cloning this repository you have to create a file in the root of it called **parseConfig.php**
 
-### Below is a sample for parseConfig.php ###
+### sample of parseConfig.php ###
+
+Below is what you want parseConfig.php to look like, just fill in your IDs and KEYs to get started.
 
 ```
 <?php
