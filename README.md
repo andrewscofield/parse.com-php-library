@@ -44,6 +44,25 @@ $params = array(
 $request = $parse->create($params);
 ```
   
+NOTIFICATION EXAMPLE
+----------------
+
+```
+$params = array(
+  'object' => array(
+    'channel' => 'Andrew Scofield',
+    'data' => array(
+      'alert' => 'Joey Votto makes another home run!',
+      'sound' => 'default',
+      'badge' => 0,
+      'type'  => 'score',
+    )
+  )
+);
+
+$request = $parse->notification($params);
+```
+  
 GET EXAMPLE
 ------------
 
@@ -62,14 +81,36 @@ QUERY EXAMPLE
 ```
 $params = array(
     'className' => 'gameScore',
+    'object' => array(),
     'query' => array(
-    	'score'=> array(
-    		'$gt' => 500
-    	) 
+        'score' => array(
+            '$gt' => 500
+        )
     ),
     'order' => '-score',
     'limit' => '2',
     'skip' => '2'
+);
+
+$request = $parse->query($params);
+```
+
+RELATION QUERY EXAMPLE
+----------------------
+
+```
+$params = array(
+    'className' => 'User',
+    'query' => array(
+        '$relatedTo' => array(
+            'object' => array(
+                '__type' => 'Pointer',
+                'className' => 'Post',
+                'objectId' => $postId
+            ),
+            'key' => 'like'
+        )
+    )
 );
 
 $request = $parse->query($params);
@@ -102,3 +143,4 @@ $params = array(
 
 $request = $parse->delete($params); 
 ```
+
