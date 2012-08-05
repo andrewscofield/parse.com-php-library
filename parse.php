@@ -178,7 +178,7 @@ class ParseLibraryException extends Exception{
 	public function __construct($message, $code = 0, Exception $previous = null) {
 		//codes are only set by a parse.com error
 		if($code != 0){
-			$message = "parse code: ".$message;
+			$message = "parse.com error: ".$message;
 		}
 
 		parent::__construct($message, $code, $previous);

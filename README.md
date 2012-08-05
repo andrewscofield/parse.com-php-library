@@ -28,10 +28,10 @@ Below is what you want parseConfig.php to look like, just fill in your IDs and K
 
 class parseConfig{
 	
-	static APPID = '';
-	static MASTERKEY = '';
-	static RESTKEY = '';
-	static PARSEURL = 'https://api.parse.com/1/';
+	const APPID = '';
+	const MASTERKEY = '';
+	const RESTKEY = '';
+	const PARSEURL = 'https://api.parse.com/1/';
 }
 
 ?>
