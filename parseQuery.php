@@ -27,7 +27,7 @@ class parseQuery extends parseRestClient{
     		'method' => 'GET',
     		'requestUrl' => $this->_requestUrl,
     		'urlParams' => array(
-    			'query' => json_encode( $this->_query ),
+    			'where' => json_encode( $this->_query ),
     			'order' => implode(',',$this->_order),
     			'limit' => $this->_limit,
     			'skip' => $this->_skip,
