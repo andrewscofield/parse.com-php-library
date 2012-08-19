@@ -2,8 +2,8 @@ PHP parse.com API library
 ===========================
 More on the parse.com api here: https://www.parse.com/docs/rest
 
-### Beta Version ###
-Working on docs for this version, for now please see the tests folder. 
+### V1 is still avaialble ###
+Availalbe here: https://github.com/apotropaic/parse.com-php-library/blob/1.0/master/README.md
 
 I wrote tests not for testing sake, but really just to see how I liked how the library worked!
 
