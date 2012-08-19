@@ -67,14 +67,10 @@ class parseRestClient{
 		}
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
 		$url = $this->_parseurl . $args['requestUrl'];
-		
+
 		if($args['method'] == 'PUT' || $args['method'] == 'POST'){
 			if($isFile){
 				$postData = $args['data'];
-			}
-			else if($args['requestUrl'] == 'login'){
-				$urlParams = http_build_query($args['data'], '', '&');
-	    		$url = $url.'?'.$urlParams;
 			}
 			else{
 				$postData = json_encode($args['data']);
@@ -83,6 +79,10 @@ class parseRestClient{
 			curl_setopt($c, CURLOPT_POSTFIELDS, $postData );
 		}
 
+		if($args['requestUrl'] == 'login'){
+			$urlParams = http_build_query($args['data'], '', '&');
+			$url = $url.'?'.$urlParams;
+		}
 		if(array_key_exists('urlParams',$args)){
 			$urlParams = http_build_query($args['urlParams'], '', '&');
     		$url = $url.'?'.$urlParams;
