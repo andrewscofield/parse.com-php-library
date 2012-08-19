@@ -68,7 +68,7 @@ class parseRestClient{
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
 		$url = $this->_parseurl . $args['requestUrl'];
 		
-		if($args['method'] == 'PUT' || $args['method'] == 'POST'){
+		if($args['method'] == 'PUT' || $args['method'] == 'POST' || $args['GET']){
 			if($isFile){
 				$postData = $args['data'];
 			}
