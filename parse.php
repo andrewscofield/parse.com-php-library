@@ -142,6 +142,18 @@ class parseRestClient{
 						"name" => $params[0],
 					);			
 					break;
+				case 'increment':
+					$return = array(
+						"__op" => "Increment",
+						"amount" => $params[0]
+					);
+					break;
+				case 'decrement':
+					$return = array(
+						"__op" => "Decrement",
+						"amount" => $params[0]
+					);
+					break;
 				default:
 					$return = false;
 					break;	

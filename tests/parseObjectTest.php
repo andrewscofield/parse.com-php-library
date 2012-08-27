@@ -28,6 +28,18 @@ class parseObjectTest extends \Enhance\TestFixture {
 		\Enhance\Assert::areIdentical('test2', $return->testfield2);
 	}
 	
+	public function updateWithObjectIdExpectupdatedAt(){
+		$parseObject = $this->parseObject;
+		$parseObject->testfield2 = $this->testfield2;
+		$save = $parseObject->save();
+
+		$updateObject = new parseObject('test');
+		$updateObject->testfield2 = 'updated test2';
+		$return = $parseObject->update($save->objectId);
+
+		\Enhance\Assert::isTrue( property_exists($return, 'updatedAt') );
+	}
+	
 	public function deleteWithObjectIdExpectEmpty(){
 		$parseObject = $this->parseObject;
 		$parseObject->testfield1 = $this->testfield2;
