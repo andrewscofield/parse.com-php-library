@@ -40,7 +40,7 @@ class parseObject extends parseRestClient{
 			));
 			
 			if(!empty($this->_includes)){
-				$request['include'] = implode(',', $this->_order);
+				$request['include'] = implode(',', $this->_includes);
 			}
 			
 			return $request;
