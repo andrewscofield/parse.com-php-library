@@ -38,7 +38,7 @@ class parseRestClient{
 	public function request($args){
 		$isFile = false;
 		$c = curl_init();
-		curl_setopt($c, CURLOPT_TIMEOUT, 5);
+		curl_setopt($c, CURLOPT_TIMEOUT, 30);
 		curl_setopt($c, CURLOPT_USERAGENT, 'parse.com-php-library/2.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($c, CURLINFO_HEADER_OUT, true);
