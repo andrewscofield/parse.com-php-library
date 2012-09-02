@@ -3,6 +3,7 @@
 class parseQuery extends parseRestClient{
 	private $_limit = 100;
 	private $_skip = 0;
+	private $_count = 0;
 	private $_order = array();
 	private $_query = array();
 	private $_include = array();
@@ -23,27 +24,61 @@ class parseQuery extends parseRestClient{
 	}
 
 	public function find(){
-		$request = $this->request(array(
-    		'method' => 'GET',
-    		'requestUrl' => $this->_requestUrl,
-    		'urlParams' => array(
-    			'where' => json_encode( $this->_query ),
-    			'order' => implode(',',$this->_order),
-    			'limit' => $this->_limit,
-    			'skip' => $this->_skip,
-    			'include' => implode(',',$this->_include)
-    		),
-		));
-		
-    	return $request;
+		if(empty($this->_query)){
+			$this->throwError('No query set yet.');
+		}
+		else{
+			$urlParams = array(
+				'where' => json_encode( $this->_query )
+			);
+			if(!empty($this->_include)){
+				$urlParams['include'] = implode(',',$this->_include);
+			}
+			if(!empty($this->_order)){
+				$urlParams['order'] = implode(',',$this->_order);
+			}
+			if(!empty($this->_limit)){
+				$urlParams['limit'] = $this->_limit;
+			}
+			if(!empty($this->_skip)){
+				$urlParams['skip'] = $this->_skip;
+			}
+			if($this->_count == 1){
+				$urlParams['count'] == '1'
+			}
+
+			$request = $this->request(array(
+				'method' => 'GET',
+				'requestUrl' => $this->_requestUrl,
+				'urlParams' => $urlParams,
+			));
+			
+			return $request;
+
+		}
+	}
+
+	public function getCount(){
+		$this->_count = 1;
+		return $this->find();
 	}
 
 	public function setLimit($int){
-		if ($int > 1 && $int < 1000){
+		if ($int => 1 && $int <= 1000){
 			$this->_limit = $int;
 		}
 		else{
 			$this->throwError('parse requires the limit parameter be between 1 and 1000');
+		}
+	}
+
+	public function setSkip($int){
+		$this->_skip = $int;
+	}
+
+	public function orderBy($field){
+		if(!empty($field)){
+			$this->_order[] = $field;
 		}
 	}
 
