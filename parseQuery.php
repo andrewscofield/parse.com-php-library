@@ -44,7 +44,7 @@ class parseQuery extends parseRestClient{
 				$urlParams['skip'] = $this->_skip;
 			}
 			if($this->_count == 1){
-				$urlParams['count'] == '1'
+				$urlParams['count'] == '1';
 			}
 
 			$request = $this->request(array(
@@ -64,7 +64,7 @@ class parseQuery extends parseRestClient{
 	}
 
 	public function setLimit($int){
-		if ($int => 1 && $int <= 1000){
+		if ($int >= 1 && $int <= 1000){
 			$this->_limit = $int;
 		}
 		else{
