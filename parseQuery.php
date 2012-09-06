@@ -44,7 +44,7 @@ class parseQuery extends parseRestClient{
 				$urlParams['skip'] = $this->_skip;
 			}
 			if($this->_count == 1){
-				$urlParams['count'] == '1';
+				$urlParams['count'] = '1';
 			}
 
 			$request = $this->request(array(
