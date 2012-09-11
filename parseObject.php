@@ -40,12 +40,33 @@ class parseObject extends parseRestClient{
 			));
 			
 			if(!empty($this->_includes)){
-				$request['include'] = implode(',', $this->_order);
+				$request['include'] = implode(',', $this->_includes);
 			}
 			
 			return $request;
 		}
 	}
+
+	public function update($id){
+		if($this->_className != '' || !empty($id)){
+			$request = $this->request(array(
+				'method' => 'PUT',
+				'requestUrl' => 'classes/'.$this->_className.'/'.$id,
+				'data' => $this->data,
+			));
+
+			return $request;
+		}
+	}
+
+	public function increment($field,$amount){
+		$this->data[$field] = $this->dataType('increment', $amount);
+	}
+
+	public function decrement($id){
+		$this->data[$field] = $this->dataType('decrement', $amount);
+	}
+
 
 	public function delete($id){
 		if($this->_className != '' || !empty($id)){
@@ -57,7 +78,7 @@ class parseObject extends parseRestClient{
 			return $request;
 		}		
 	}
-	
+
 	public function addInclude($name){
 		$this->_includes[] = $name;
 	}
