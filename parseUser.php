@@ -18,7 +18,7 @@ class parseUser extends parseRestClient{
 			$request = $this->request(array(
 				'method' => 'POST',
 	    		'requestUrl' => 'users',
-		    	'data' => $this->data
+				'data' => $this->data
 			));
 			
 	    	return $request;
@@ -29,7 +29,7 @@ class parseUser extends parseRestClient{
 		}
 		
 	}
-	
+
 	public function login(){
 		if(!empty($this->data['username']) || !empty($this->data['password'])	){
 			$request = $this->request(array(
@@ -62,6 +62,23 @@ class parseUser extends parseRestClient{
 		}
 		else{
 			$this->throwError('objectId is required for the get method');
+		}
+		
+	}
+
+	public function update($objectId,$sessionToken){
+		if(!empty($objectId) || !empty($sessionToken)){
+			$request = $this->request(array(
+				'method' => 'PUT',
+				'requestUrl' => 'users/'.$objectId,
+	    		'sessionToken' => $sessionToken,
+				'data' => $this->data
+			));
+			
+	    	return $request;			
+		}
+		else{
+			$this->throwError('objectId and sessionToken are required for the update method');
 		}
 		
 	}
