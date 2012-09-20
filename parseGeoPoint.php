@@ -9,7 +9,7 @@ class parseGeoPoint extends parseRestClient{
 	public function __construct($lat,$long){
 		$this->lat = $lat;
 		$this->long = $long;
-		$this->location = $this->dataType('geopoint', array("40.10","-30.50"));
+		$this->location = $this->dataType('geopoint', array($this->lat, $this->long));
 	}
 
 	public function __toString(){		
