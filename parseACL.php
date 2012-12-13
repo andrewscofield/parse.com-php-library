@@ -10,7 +10,7 @@ $acl->setPublicReadAccess(false);
 $acl->setReadAccessForId('user_id',true);
 $acl->setWriteAccessForRole('role_name',true);
 
-$object->ACL($acl);
+$object->ACL($acl->acl);
 $object->save();
 */
 class parseACL{
