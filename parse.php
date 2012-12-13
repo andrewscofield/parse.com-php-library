@@ -7,6 +7,7 @@ include 'parseFile.php';
 include 'parsePush.php';
 include 'parseGeoPoint.php';
 include 'parseACL.php';
+include 'parseRole.php';
 
 class parseRestClient{
 
