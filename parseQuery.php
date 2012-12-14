@@ -9,7 +9,7 @@ class parseQuery extends parseRestClient{
 	private $_include = array();
 
 	public function __construct($class=''){
-		if($class == 'users'){
+		if($class == 'users' || $class == 'roles'){
 			$this->_requestUrl = $class;
 		}
 		elseif($class != ''){
