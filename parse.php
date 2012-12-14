@@ -134,6 +134,12 @@ class parseRestClient{
 						"objectId" => $params[1]
 					);			
 					break;
+                                case 'relatedTo':
+                                        $return = array(
+                                            "object" => $params[0], // pointer
+                                            "key" => $params[1] // key
+                                        );
+                                        break;
 				case 'geopoint':
 					$return = array(
 						"__type" => "GeoPoint",
