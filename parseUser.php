@@ -51,14 +51,15 @@ class parseUser extends parseRestClient{
 	}
 
 	public function get($objectId){
+                if(!empty($this->_includes)){
+                        $request['include'] = implode(',', $this->_includes);
+                }
+                
 		if($objectId != ''){
 			$request = $this->request(array(
 				'method' => 'GET',
 	    		'requestUrl' => 'users/'.$objectId,
 			));
-			if(!empty($this->_includes)){
-				$request['include'] = implode(',', $this->_includes);
-			}
 			
 	    	return $request;			
 			
