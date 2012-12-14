@@ -45,7 +45,8 @@ class parseQuery extends parseRestClient{
         if($this->_count == 1){
             $urlParams['count'] = '1';
         }
-
+        print_r($this->_requestUrl);
+        print_r($urlParams);
         $request = $this->request(array(
             'method' => 'GET',
             'requestUrl' => $this->_requestUrl,
@@ -250,7 +251,28 @@ class parseQuery extends parseRestClient{
 		}
 		
 	}
-
+        
+        /**
+         * Example - to find users with a particular role id
+         * $query->whereRelatedTo('users', '_Role', $roleId);
+         * 
+         * @param type $key
+         * @param type $className
+         * @param type $objectId
+         */
+        public function whereRelatedTo($key,$className,$objectId) {
+            if(isset($key) && isset($className) && isset($objectId)){
+                if($className === 'Role')
+                    $className = '_Role';
+                if($className === 'User')
+                    $className = '_User';
+                $pointer = $this->dataType('pointer', array($className, $objectId));
+                $this->_query['$relatedTo'] = $this->dataType('relatedTo', array($pointer, $key));
+            } else {
+		$this->throwError('the $key and $classname and $objectId parameters must be set when setting a "whereRelatedTo" query method');		
+            }
+        }
+        
 	public function whereInQuery($key,$className,$inQuery){
 		if(isset($key) && isset($className)){
 			$this->_query[$key] = array(
