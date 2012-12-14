@@ -1,7 +1,7 @@
 <?php
 
 class parseUser extends parseRestClient{
-
+	public $_includes = array();
 	public $authData;
 
 	public function __set($name,$value){
@@ -56,6 +56,9 @@ class parseUser extends parseRestClient{
 				'method' => 'GET',
 	    		'requestUrl' => 'users/'.$objectId,
 			));
+			if(!empty($this->_includes)){
+				$request['include'] = implode(',', $this->_includes);
+			}
 			
 	    	return $request;			
 			
@@ -146,7 +149,11 @@ class parseUser extends parseRestClient{
 		}		
 
 	}
-	
+        
+	public function addInclude($name){
+		$this->_includes[] = $name;
+	}
+
 }
 
 ?>
