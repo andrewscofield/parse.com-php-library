@@ -155,6 +155,13 @@ class parseUser extends parseRestClient{
 		$this->_includes[] = $name;
 	}
 
+        public function ACL($acl = null) {
+            if($acl)
+                $this->data['ACL'] = $acl;
+            
+            return $this->data['ACL'];
+        }
+
 }
 
 ?>
