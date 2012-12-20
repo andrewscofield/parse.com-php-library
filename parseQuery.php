@@ -141,6 +141,30 @@ class parseQuery extends parseRestClient{
 	
 	}
 
+        public function whereGreaterThanDate($key,$date){
+		if(isset($key) && isset($date)){
+			$this->_query[$key] = array(
+				'$gt' => $this->dataType('date', $date)
+			);
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	
+	}
+
+        public function whereLessThanDate($key,$date){
+		if(isset($key) && isset($date)){
+			$this->_query[$key] = array(
+				'$gt' => $this->dataType('date', $date)
+			);
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	
+	}
+
 	public function whereLessThan($key,$value){
 		if(isset($key) && isset($value)){
 			$this->_query[$key] = array(
