@@ -237,7 +237,7 @@ class parseQuery extends parseRestClient{
 				'$regex' => $value
 			);
 
-			if(isset($options)){
+			if(!empty($options)){
 				$this->_query[$key]['options'] = $options;
 			}
 		}	
