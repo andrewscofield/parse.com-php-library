@@ -110,7 +110,7 @@ class parseQueryTest extends \Enhance\TestFixture {
 
 	public function findWithRegexExpectResults(){
 		$parseQuery = $this->parseQuery;
-		$parseQuery->whereRegex('score','^\d{1,5}(\.\d{1,2})?$');
+		$parseQuery->whereRegex('name','^\bF.*');
 		$return = $parseQuery->find();
 		
 		\Enhance\Assert::isTrue( is_array($return->results) );
