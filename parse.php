@@ -6,6 +6,7 @@ include 'parseUser.php';
 include 'parseFile.php';
 include 'parsePush.php';
 include 'parseGeoPoint.php';
+include 'parseACL.php';
 
 class parseRestClient{
 
@@ -62,7 +63,8 @@ class parseRestClient{
 			curl_setopt($c, CURLOPT_HTTPHEADER, array(
 				'Content-Type: application/json',
 				'X-Parse-Application-Id: '.$this->_appid,
-				'X-Parse-REST-API-Key: '.$this->_restkey
+				'X-Parse-REST-API-Key: '.$this->_restkey,
+				'X-Parse-Master-Key: '.$this->_masterkey
 			));	
 		}
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
