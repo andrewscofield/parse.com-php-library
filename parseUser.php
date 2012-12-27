@@ -65,7 +65,7 @@ class parseUser extends parseRestClient{
 		}
 		
 	}
-
+	//TODO: should make the parseUser contruct accept the objectId and update and delete would only require the sessionToken
 	public function update($objectId,$sessionToken){
 		if(!empty($objectId) || !empty($sessionToken)){
 			$request = $this->request(array(

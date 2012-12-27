@@ -234,9 +234,12 @@ class parseQuery extends parseRestClient{
 	public function whereRegex($key,$value,$options=''){
 		if(isset($key) && isset($value)){
 			$this->_query[$key] = array(
-				'$regex' => $value,
-				'options' => $options
+				'$regex' => $value
 			);
+
+			if(isset($options)){
+				$this->_query[$key]['options'] = $options;
+			}
 		}	
 		else{
 			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
