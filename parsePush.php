@@ -22,7 +22,7 @@ class parsePush extends parseRestClient{
 	}
 	
 	public function __set($name,$value){
-		if($name != 'channel' || $name != 'channels' || $name != 'expiration_time' || $name != 'expiration_time_interval' || $name != 'type' || $name != 'data'){
+		if($name != 'channel' || $name != 'channels' || $name != 'expiration_time' || $name != 'expiration_interval' || $name != 'type' || $name != 'data'){
 			$this->data[$name] = $value;
 		}
 	}
@@ -65,7 +65,7 @@ class parsePush extends parseRestClient{
 					$params['data']['expiration_time'] = $this->expiration_time;
 				}
 				if(!empty($this->expiration_time_interval)){
-					$params['data']['expiration_time_interval'] = $this->expiration_time_interval;
+					$params['data']['expiration_interval'] = $this->expiration_interval;
 				}
 				if(!empty($this->content_available)){
 					//changed back to content-available... underscores are much easier to deal with in PHP
