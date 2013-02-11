@@ -6,6 +6,7 @@ include 'parseUser.php';
 include 'parseFile.php';
 include 'parsePush.php';
 include 'parseGeoPoint.php';
+include 'parseCustomCode.php';
 include 'parseACL.php';
 
 class parseRestClient{
@@ -39,6 +40,7 @@ class parseRestClient{
 	public function request($args){
 		$isFile = false;
 		$c = curl_init();
+		curl_setopt($c, CURLOPT_CAINFO, "api.parse.com.crt"); // Required for windows curl support.
 		curl_setopt($c, CURLOPT_TIMEOUT, 30);
 		curl_setopt($c, CURLOPT_USERAGENT, 'parse.com-php-library/2.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
