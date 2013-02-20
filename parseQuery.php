@@ -24,28 +24,30 @@ class parseQuery extends parseRestClient{
 	}
 
 	public function find(){
-
-        $urlParams = array();
-
-        if(!empty($this->_query)){
-            $urlParams['where'] = json_encode($this->_query);
-        }
-        if(!empty($this->_include)){
-            $urlParams['include'] = implode(',',$this->_include);
-        }
-        if(!empty($this->_order)){
-            $urlParams['order'] = implode(',',$this->_order);
-        }
-        if(!empty($this->_limit)){
-            $urlParams['limit'] = $this->_limit;
-        }
-        if(!empty($this->_skip)){
-            $urlParams['skip'] = $this->_skip;
-        }
-        if($this->_count == 1){
-            $urlParams['count'] = '1';
-        }
-
+		if(empty($this->_query)){
+			$this->throwError('No query set yet.');
+		}
+		else{
+			$urlParams = array(
+				'where' => json_encode( $this->_query )
+			);
+			if(!empty($this->_include)){
+				$urlParams['include'] = implode(',',$this->_include);
+			}
+			if(!empty($this->_order)){
+				$urlParams['order'] = implode(',',$this->_order);
+			}
+			if(!empty($this->_limit)){
+				$urlParams['limit'] = $this->_limit;
+			}
+			if(!empty($this->_skip)){
+				$urlParams['skip'] = $this->_skip;
+			}
+			if($this->_count == 1){
+				$urlParams['count'] = '1';
+				$urlParams['limit'] = '0';
+			}
+			
         $request = $this->request(array(
             'method' => 'GET',
             'requestUrl' => $this->_requestUrl,
@@ -57,6 +59,7 @@ class parseQuery extends parseRestClient{
 
 	public function getCount(){
 		$this->_count = 1;
+		$this->_limit = 0;
 		return $this->find();
 	}
 
@@ -257,7 +260,7 @@ class parseQuery extends parseRestClient{
 	public function whereInQuery($key,$className,$inQuery){
 		if(isset($key) && isset($className)){
 			$this->_query[$key] = array(
-				'$inQuery' => json_encode($inQuery),
+				'$inQuery' => $inQuery,
 				'className' => $className
 			);
 		}	
@@ -270,7 +273,7 @@ class parseQuery extends parseRestClient{
 	public function whereNotInQuery($key,$className,$inQuery){
 		if(isset($key) && isset($className)){
 			$this->_query[$key] = array(
-				'$notInQuery' => json_encode($inQuery),
+				'$notInQuery' => $inQuery,
 				'className' => $className
 			);
 		}	
