@@ -45,6 +45,7 @@ class parseQuery extends parseRestClient{
 			}
 			if($this->_count == 1){
 				$urlParams['count'] = '1';
+				$urlParams['limit'] = '0';
 			}
 
 			$request = $this->request(array(
@@ -60,6 +61,7 @@ class parseQuery extends parseRestClient{
 
 	public function getCount(){
 		$this->_count = 1;
+		$this->_limit = 0;
 		return $this->find();
 	}
 
