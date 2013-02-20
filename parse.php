@@ -28,6 +28,14 @@ class parseRestClient{
 		if(empty($this->_appid) || empty($this->_restkey) || empty($this->_masterkey)){
 			$this->throwError('You must set your Application ID, Master Key and REST API Key');
 		}
+
+		$version = curl_version();
+		$ssl_supported = ( $version['features'] & CURL_VERSION_SSL );
+
+		if(!$ssl_supported){
+			$this->throwError('CURL ssl support not found');	
+		}
+
 	}
 
 	/*
