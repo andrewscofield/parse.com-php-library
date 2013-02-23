@@ -48,13 +48,14 @@ class parseQuery extends parseRestClient{
 				$urlParams['limit'] = '0';
 			}
 			
-        $request = $this->request(array(
-            'method' => 'GET',
-            'requestUrl' => $this->_requestUrl,
-            'urlParams' => $urlParams,
-        ));
+			$request = $this->request(array(
+				'method' => 'GET',
+				'requestUrl' => $this->_requestUrl,
+				'urlParams' => $urlParams,
+			));
 
-        return $request;
+			return $request;
+		}
 	}
 
 	public function getCount(){
