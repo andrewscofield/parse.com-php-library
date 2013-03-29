@@ -108,7 +108,6 @@ class parseRestClient{
 		if($args['method'] == 'POST' && substr($args['requestUrl'],0,4) != 'push'){
 			// checking if it is not cloud code - it returns code 200
 			if(substr($args['requestUrl'],0,9) != 'functions')$expectedCode = '201';
-			$expectedCode = '201';
 		}
 		
 		if($expectedCode != $responseCode){

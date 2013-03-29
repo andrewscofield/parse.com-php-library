@@ -14,7 +14,7 @@ class parseCloud extends parseRestClient{
 	private $_functionName = '';
 
 	public function __construct($function=''){
-		$this->_options = [];
+		$this->_options = array();
 		if($function != ''){
 			$this->_functionName = $function; 
 		}
