@@ -7,6 +7,7 @@ include 'parseFile.php';
 include 'parsePush.php';
 include 'parseGeoPoint.php';
 include 'parseACL.php';
+include 'parseCloud.php';
 
 class parseRestClient{
 
@@ -105,6 +106,8 @@ class parseRestClient{
 
 		$expectedCode = '200';
 		if($args['method'] == 'POST' && substr($args['requestUrl'],0,4) != 'push'){
+			// checking if it is not cloud code - it returns code 200
+			if(substr($args['requestUrl'],0,9) != 'functions')$expectedCode = '201';
 			$expectedCode = '201';
 		}
 		
