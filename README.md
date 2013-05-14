@@ -2,7 +2,7 @@ PHP parse.com API library
 ===========================
 More on the parse.com api here: https://www.parse.com/docs/rest
 
-### V1 is still avaialble ###
+### V1 is still available ###
 Availalbe here: https://github.com/apotropaic/parse.com-php-library/blob/parse.com-php-library_v1/README.md
 
 I wrote tests not for testing sake, but really just to see how I liked how the library worked!
