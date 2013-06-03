@@ -37,7 +37,7 @@ class parseQuery extends parseRestClient{
 			if(!empty($this->_order)){
 				$urlParams['order'] = implode(',',$this->_order);
 			}
-			if(!empty($this->_limit)){
+			if(!empty($this->_limit) || $this->_limit == 0){
 				$urlParams['limit'] = $this->_limit;
 			}
 			if(!empty($this->_skip)){
@@ -45,9 +45,8 @@ class parseQuery extends parseRestClient{
 			}
 			if($this->_count == 1){
 				$urlParams['count'] = '1';
-				$urlParams['limit'] = '0';
 			}
-			
+
 			$request = $this->request(array(
 				'method' => 'GET',
 				'requestUrl' => $this->_requestUrl,
@@ -57,6 +56,10 @@ class parseQuery extends parseRestClient{
 			return $request;
 		}
 	}
+
+  public function setCount($bool){
+		$this->_count = $bool;
+  }
 
 	public function getCount(){
 		$this->_count = 1;
