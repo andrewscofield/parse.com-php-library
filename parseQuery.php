@@ -47,8 +47,6 @@ class parseQuery extends parseRestClient{
 				$urlParams['count'] = '1';
 			}
 
-  print_r($urlParams);
-			
 			$request = $this->request(array(
 				'method' => 'GET',
 				'requestUrl' => $this->_requestUrl,
