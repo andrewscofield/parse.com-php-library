@@ -8,7 +8,7 @@ class parseQuery extends parseRestClient{
 	private $_query = array();
 	private $_include = array();
 
-	public function __construct($class=''){
+	public function __construct($config,$class=''){
 		if($class == 'users'){
 			$this->_requestUrl = $class;
 		}
@@ -19,7 +19,7 @@ class parseQuery extends parseRestClient{
 			$this->throwError('include the className when creating a parseQuery');
 		}
 		
-		parent::__construct();
+		parent::__construct($config);
 
 	}
 

@@ -25,17 +25,13 @@ Below is what you want parseConfig.php to look like, just fill in your IDs and K
 
 ```
 <?php
-
-class parseConfig{
-	
-	const APPID = '';
-	const MASTERKEY = '';
-	const RESTKEY = '';
-	const PARSEURL = 'https://api.parse.com/1/';
-}
-
+    $config = array(
+        "APPID"=>'',
+        "MASTERKEY"=>'',
+        "RESTKEY"=>'',
+        "PARSEURL"=>'https://api.parse.com/1/'
+    );
 ?>
-
 ```
 
 
@@ -49,7 +45,7 @@ EXAMPLE
 <?php 
     //This example is a sample video upload stored in parse
     
-    $parse = new parseObject('Videos');
+    $parse = new parseObject($config,'Videos');
     $parse->title = $data['upload_data']['title'];
     $parse->description = $data['upload_data']['description'];
     $parse->tags = $data['upload_data']['tags'];
