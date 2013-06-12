@@ -13,12 +13,12 @@ class parsePush extends parseRestClient{
 
 	private $_globalMsg;
 
-	public function __construct($globalMsg=''){
+	public function __construct($config,$globalMsg=''){
 		if($globalMsg != ''){
 			$this->_globalMsg = $globalMsg;
 		}
 		
-		parent::__construct();
+		parent::__construct($config);
 
 	}
 	

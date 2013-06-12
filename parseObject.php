@@ -4,7 +4,7 @@ class parseObject extends parseRestClient{
 	public $_includes = array();
 	private $_className = '';
 
-	public function __construct($class=''){
+	public function __construct($config,$class=''){
 		if($class != ''){
 			$this->_className = $class;
 		}
@@ -12,7 +12,7 @@ class parseObject extends parseRestClient{
 			$this->throwError('include the className when creating a parseObject');
 		}
 
-		parent::__construct();
+		parent::__construct($config);
 	}
 
 	public function __set($name,$value){

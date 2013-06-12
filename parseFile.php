@@ -5,13 +5,13 @@ class parseFile extends parseRestClient{
 	private $_fileName;
 	private $_contentType;
 
-	public function __construct($contentType='',$data=''){
+	public function __construct($confog,$contentType='',$data=''){
 		if($contentType != '' && $data !=''){
 			$this->_contentType = $contentType;
 			$this->data = $data;
 		}
 		
-		parent::__construct();
+		parent::__construct($confog);
 
 	}
 
