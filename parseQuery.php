@@ -25,7 +25,13 @@ class parseQuery extends parseRestClient{
 
 	public function find(){
 		if(empty($this->_query)){
-			$this->throwError('No query set yet.');
+			$request = $this->request(array(
+				'method' => 'GET',
+				'requestUrl' => $this->_requestUrl
+			));
+
+			return $request;
+
 		}
 		else{
 			$urlParams = array(
