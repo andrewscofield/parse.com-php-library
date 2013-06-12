@@ -56,9 +56,14 @@ class parseQuery extends parseRestClient{
 			return $request;
 		}
 	}
-
-  public function setCount($bool){
-		$this->_count = $bool;
+	//setting this to 1 by default since you'd typically only call this function if you were wanting to turn it on
+  public function setCount($bool=1){
+  	if(is_bool($bool)){
+  		$this->_count = $bool;
+  	}
+		else{
+			$this->throwError('setCount requires a boolean paremeter');
+		}		
   }
 
 	public function getCount(){
