@@ -1,7 +1,7 @@
 <?php
 
 class parseUser extends parseRestClient{
-
+	public $_includes = array();
 	public $authData;
 
 	public function __set($name,$value){
@@ -50,23 +50,11 @@ class parseUser extends parseRestClient{
 	
 	}
 
-public function socialLogin(){
-	if(!empty($this->authData)){
-		$request = $this->request( array(
-			'method' => 'POST',
-			'requestUrl' => 'users',
-			'data' => array(
-				'authData' => $this->authData
-			)
-		));
-		return $request;
-	}
-	else{
-		$this->throwError('authArray must be set use addAuthData method');
-	}
-}
-
 	public function get($objectId){
+                if(!empty($this->_includes)){
+                        $request['include'] = implode(',', $this->_includes);
+                }
+                
 		if($objectId != ''){
 			$request = $this->request(array(
 				'method' => 'GET',
@@ -81,7 +69,7 @@ public function socialLogin(){
 		}
 		
 	}
-	//TODO: should make the parseUser contruct accept the objectId and update and delete would only require the sessionToken
+
 	public function update($objectId,$sessionToken){
 		if(!empty($objectId) || !empty($sessionToken)){
 			$request = $this->request(array(
@@ -123,6 +111,24 @@ public function socialLogin(){
 			$this->throwError('authArray must be an array containing a type key and a authData key in the addAuthData method');
 		}
 	}
+	
+	
+	
+	public function socialLogin(){
+		if(!empty($this->authData)){
+			$request = $this->request( array(
+				'method' => 'POST',
+				'requestUrl' => 'users',
+				'data' => array(
+					'authData' => $this->authData
+				)
+			));
+
+			return $request;	
+		}else{
+			$this->throwError('authArray must be set use addAuthData method');
+		}
+	}
 
 	public function linkAccounts($objectId,$sessionToken){
 		if(!empty($objectId) || !empty($sessionToken)){
@@ -162,26 +168,18 @@ public function socialLogin(){
 		}		
 
 	}
+        
+	public function addInclude($name){
+		$this->_includes[] = $name;
+	}
 
-	public function requestPasswordReset($email){
-		if(!empty($email)){
-			$this->email - $email;
-			$request = $this->request(array(
-			'method' => 'POST',
-			'requestUrl' => 'requestPasswordReset',
-			'email' => $email,
-			'data' => $this->data
-			));
+        public function ACL($acl = null) {
+            if($acl)
+                $this->data['ACL'] = $acl;
+            
+            return $this->data['ACL'];
+        }
 
-			return $request;
-		}
-		else{
-			$this->throwError('email is required for the requestPasswordReset method');
-		}
-
-}
-
-	
 }
 
 ?>

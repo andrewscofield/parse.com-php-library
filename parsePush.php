@@ -9,7 +9,6 @@ class parsePush extends parseRestClient{
 	public $content_available;
 	public $type;
 	public $title;
-	public $where;
 
 	private $_globalMsg;
 
@@ -23,7 +22,7 @@ class parsePush extends parseRestClient{
 	}
 	
 	public function __set($name,$value){
-		if($name != 'channel' || $name != 'channels' || $name != 'expiration_time' || $name != 'expiration_interval' || $name != 'type' || $name != 'data' || $name != 'where'){
+		if($name != 'channel' || $name != 'channels' || $name != 'expiration_time' || $name != 'expiration_time_interval' || $name != 'type' || $name != 'data'){
 			$this->data[$name] = $value;
 		}
 	}
@@ -45,8 +44,8 @@ class parsePush extends parseRestClient{
 		}
 		else{
 			if(count($this->data) > 0){
-				if($this->channel == '' && empty($this->channels) && empty($this->where)){
-					$this->throwError('A push Channel must be set when not using Advanced Targeting');
+				if($this->channel == '' && empty($this->channels)){
+					$this->throwError('No push channel has been set');
 				}
 				$params = array(
 					'method' => 'POST',
@@ -66,7 +65,7 @@ class parsePush extends parseRestClient{
 					$params['data']['expiration_time'] = $this->expiration_time;
 				}
 				if(!empty($this->expiration_time_interval)){
-					$params['data']['expiration_interval'] = $this->expiration_interval;
+					$params['data']['expiration_time_interval'] = $this->expiration_time_interval;
 				}
 				if(!empty($this->content_available)){
 					//changed back to content-available... underscores are much easier to deal with in PHP
@@ -74,9 +73,6 @@ class parsePush extends parseRestClient{
 				}
 				if(!empty($this->type)){
 					$params['data']['type'] = $this->type;
-				}
-				if(!empty($this->where)){
-					$params['data']['where'] = $this->where;
 				}
 				
 				$request = $this->request($params);

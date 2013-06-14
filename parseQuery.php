@@ -9,7 +9,7 @@ class parseQuery extends parseRestClient{
 	private $_include = array();
 
 	public function __construct($class=''){
-		if($class == 'users' || $class == 'installation'){
+		if($class == 'users' || $class == 'roles'){
 			$this->_requestUrl = $class;
 		}
 		elseif($class != ''){
@@ -24,53 +24,36 @@ class parseQuery extends parseRestClient{
 	}
 
 	public function find(){
-		if(empty($this->_query)){
-			$request = $this->request(array(
-				'method' => 'GET',
-				'requestUrl' => $this->_requestUrl
-			));
 
-			return $request;
+        $urlParams = array();
 
-		}
-		else{
-			$urlParams = array(
-				'where' => json_encode( $this->_query )
-			);
-			if(!empty($this->_include)){
-				$urlParams['include'] = implode(',',$this->_include);
-			}
-			if(!empty($this->_order)){
-				$urlParams['order'] = implode(',',$this->_order);
-			}
-			if(!empty($this->_limit) || $this->_limit == 0){
-				$urlParams['limit'] = $this->_limit;
-			}
-			if(!empty($this->_skip)){
-				$urlParams['skip'] = $this->_skip;
-			}
-			if($this->_count == 1){
-				$urlParams['count'] = '1';
-			}
+        if(!empty($this->_query)){
+            $urlParams['where'] = json_encode($this->_query);
+        }
+        if(!empty($this->_include)){
+            $urlParams['include'] = implode(',',$this->_include);
+        }
+        if(!empty($this->_order)){
+            $urlParams['order'] = implode(',',$this->_order);
+        }
+        if(!empty($this->_limit)){
+            $urlParams['limit'] = $this->_limit;
+        }
+        if(!empty($this->_skip)){
+            $urlParams['skip'] = $this->_skip;
+        }
+        if($this->_count == 1){
+			$urlParams['count'] = '1';
+			$urlParams['limit'] = '0';
+        }
+        $request = $this->request(array(
+            'method' => 'GET',
+            'requestUrl' => $this->_requestUrl,
+            'urlParams' => $urlParams,
+        ));
 
-			$request = $this->request(array(
-				'method' => 'GET',
-				'requestUrl' => $this->_requestUrl,
-				'urlParams' => $urlParams,
-			));
-
-			return $request;
-		}
+        return $request;
 	}
-	//setting this to 1 by default since you'd typically only call this function if you were wanting to turn it on
-  public function setCount($bool=1){
-  	if(is_bool($bool)){
-  		$this->_count = $bool;
-  	}
-		else{
-			$this->throwError('setCount requires a boolean paremeter');
-		}		
-  }
 
 	public function getCount(){
 		$this->_count = 1;
@@ -147,11 +130,46 @@ class parseQuery extends parseRestClient{
 			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
 		}
 	}
+	
+	
+	public function whereCompound($key,$value){
+		if(isset($key) && isset($value)){
+			$this->_query[$key] = $value;
+	
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	}
 
 	public function whereGreaterThan($key,$value){
 		if(isset($key) && isset($value)){
 			$this->_query[$key] = array(
 				'$gt' => $value
+			);
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	
+	}
+
+    public function whereGreaterThanDate($key,$date){
+		if(isset($key) && isset($date)){
+			$this->_query[$key] = array(
+				'$gt' => $this->dataType('date', $date)
+			);
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	
+	}
+
+        public function whereLessThanDate($key,$date){
+		if(isset($key) && isset($date)){
+			$this->_query[$key] = array(
+				'$gt' => $this->dataType('date', $date)
 			);
 		}	
 		else{
@@ -249,12 +267,9 @@ class parseQuery extends parseRestClient{
 	public function whereRegex($key,$value,$options=''){
 		if(isset($key) && isset($value)){
 			$this->_query[$key] = array(
-				'$regex' => $value
+				'$regex' => $value,
+				'options' => $options
 			);
-
-			if(!empty($options)){
-				$this->_query[$key]['options'] = $options;
-			}
 		}	
 		else{
 			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
@@ -271,11 +286,32 @@ class parseQuery extends parseRestClient{
 		}
 		
 	}
-
+        
+        /**
+         * Example - to find users with a particular role id
+         * $query->whereRelatedTo('users', '_Role', $roleId);
+         * 
+         * @param type $key
+         * @param type $className
+         * @param type $objectId
+         */
+        public function whereRelatedTo($key,$className,$objectId) {
+            if(isset($key) && isset($className) && isset($objectId)){
+                if($className === 'Role')
+                    $className = '_Role';
+                if($className === 'User')
+                    $className = '_User';
+                $pointer = $this->dataType('pointer', array($className, $objectId));
+                $this->_query['$relatedTo'] = $this->dataType('relatedTo', array($pointer, $key));
+            } else {
+		$this->throwError('the $key and $classname and $objectId parameters must be set when setting a "whereRelatedTo" query method');		
+            }
+        }
+        
 	public function whereInQuery($key,$className,$inQuery){
 		if(isset($key) && isset($className)){
 			$this->_query[$key] = array(
-				'$inQuery' => $inQuery,
+				'$inQuery' => json_encode($inQuery),
 				'className' => $className
 			);
 		}	
@@ -288,7 +324,7 @@ class parseQuery extends parseRestClient{
 	public function whereNotInQuery($key,$className,$inQuery){
 		if(isset($key) && isset($className)){
 			$this->_query[$key] = array(
-				'$notInQuery' => $inQuery,
+				'$notInQuery' => json_encode($inQuery),
 				'className' => $className
 			);
 		}	

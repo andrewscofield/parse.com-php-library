@@ -2,7 +2,7 @@
 
 class parseObject extends parseRestClient{
 	public $_includes = array();
-	private $_className = '';
+	protected $_className = '';
 
 	public function __construct($class=''){
 		if($class != ''){
@@ -21,6 +21,23 @@ class parseObject extends parseRestClient{
 		}
 	}
 
+        public function ACL($acl = null) {
+            if($acl)
+                $this->data['ACL'] = $acl;
+            
+            return $this->data['ACL'];
+        }
+
+        public function setProperty($name, $value) {
+		if($name != '_className'){
+			$this->data[$name] = $value;
+		}
+        }
+
+        public function getProperty($name) {
+            return $this->data[$name];
+        }
+        
 	public function save(){
 		if(count($this->data) > 0 && $this->_className != ''){
 			$request = $this->request(array(
@@ -63,10 +80,17 @@ class parseObject extends parseRestClient{
 		$this->data[$field] = $this->dataType('increment', $amount);
 	}
 
-	public function decrement($id){
+	public function decrement($field,$amount){
 		$this->data[$field] = $this->dataType('decrement', $amount);
 	}
-
+	
+	public function addRelation($field,$pointer){
+		$this->data[$field] = $this->dataType('addRelation', $pointer);
+	}
+	
+	public function removeRelation($field,$pointer){
+		$this->data[$field] = $this->dataType('removeRelation', $pointer);
+	}
 
 	public function delete($id){
 		if($this->_className != '' || !empty($id)){
@@ -78,7 +102,7 @@ class parseObject extends parseRestClient{
 			return $request;
 		}		
 	}
-
+        
 	public function addInclude($name){
 		$this->_includes[] = $name;
 	}

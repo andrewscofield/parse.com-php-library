@@ -7,10 +7,10 @@ include 'parseFile.php';
 include 'parsePush.php';
 include 'parseGeoPoint.php';
 include 'parseACL.php';
-include 'parseCloud.php';
+include 'parseRole.php';
 
 class parseRestClient{
-
+    
 	private $_appid = '';
 	private $_masterkey = '';
 	private $_restkey = '';
@@ -30,14 +30,6 @@ class parseRestClient{
 		if(empty($this->_appid) || empty($this->_restkey) || empty($this->_masterkey)){
 			$this->throwError('You must set your Application ID, Master Key and REST API Key');
 		}
-
-		$version = curl_version();
-		$ssl_supported = ( $version['features'] & CURL_VERSION_SSL );
-
-		if(!$ssl_supported){
-			$this->throwError('CURL ssl support not found');	
-		}
-
 	}
 
 	/*
@@ -51,6 +43,7 @@ class parseRestClient{
 		curl_setopt($c, CURLOPT_TIMEOUT, 30);
 		curl_setopt($c, CURLOPT_USERAGENT, 'parse.com-php-library/2.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($c, CURLINFO_HEADER_OUT, true);
 		if(substr($args['requestUrl'],0,5) == 'files'){
 			curl_setopt($c, CURLOPT_HTTPHEADER, array(
@@ -99,26 +92,28 @@ class parseRestClient{
     		$url = $url.'?'.$urlParams;
 		}
 
-		curl_setopt($c, CURLOPT_URL, $url);
-
+		$call = curl_setopt($c, CURLOPT_URL, $url);
+		
 		$response = curl_exec($c);
 		$responseCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 
 		$expectedCode = array('200');
 		if($args['method'] == 'POST' && substr($args['requestUrl'],0,4) != 'push'){
-			// checking if it is not cloud code - it returns code 200
-			if(substr($args['requestUrl'],0,9) != 'functions'){
-				$expectedCode = array('200','201');
-			}
+			$expectedCode = array('201','200');
 		}
-
-		//BELOW HELPS WITH DEBUGGING		
-		/*
+		
 		if(!in_array($responseCode,$expectedCode)){
-			//print_r($response);
-			//print_r($args);		
+			//BELOW HELPS WITH DEBUGGING
+			// echo"<pre>";
+			// 	print_r($responseCode);
+			// 	print_r($expectedCode);
+			// 	print_r($response);
+			// 	print_r($args);	
+			// 	print_r($call);
+			// 	print_r($postData);
+			// echo"</pre>";
 		}
-		*/
+		
 		return $this->checkResponse($response,$responseCode,$expectedCode);
 	}
 
@@ -144,6 +139,24 @@ class parseRestClient{
 						"objectId" => $params[1]
 					);			
 					break;
+                case 'relatedTo':
+                        $return = array(
+                            "object" => $params[0], // pointer
+                            "key" => $params[1] // key
+                        );
+	                break;
+				case 'addRelation':
+					$return = array(
+						"__op" => "AddRelation",
+						"objects" => array($params[0])
+					);
+					break;
+				case 'addRelation':
+					$return = array(
+						"__op" => "RemoveRelation",
+						"objects" => array($params[0])
+					);
+					break;	
 				case 'geopoint':
 					$return = array(
 						"__type" => "GeoPoint",
@@ -179,14 +192,17 @@ class parseRestClient{
 	}
 
 	public function throwError($msg,$code=0){
-		throw new ParseLibraryException($msg,$code);
+		// $msg
+		return($code);
 	}
 
 	private function checkResponse($response,$responseCode,$expectedCode){
 		//TODO: Need to also check for response for a correct result from parse.com
+		//print_r("Expected: ".$expectedCode.", Response: ".$responseCode);
+		
 		if(!in_array($responseCode,$expectedCode)){
 			$error = json_decode($response);
-			$this->throwError($error->error,$error->code);
+			return $this->throwError($error->error,$error->code);
 		}
 		else{
 			//check for empty return
