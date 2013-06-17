@@ -148,6 +148,7 @@ class parseQuery extends parseRestClient{
 		}
 	}
 
+
 	public function whereGreaterThan($key,$value){
 		if(isset($key) && isset($value)){
 			$this->_query[$key] = array(
@@ -195,6 +196,24 @@ class parseQuery extends parseRestClient{
 		}
 	
 	}
+
+	public function whereAll($key,$value){
+		if(isset($key) && isset($value)){
+			if(is_array($value)){
+				$this->_query[$key] = array(
+					'$all' => $value
+				);		
+			}
+			else{
+				$this->throwError('$value must be an array to check through');		
+			}
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	
+	}
+
 
 	public function whereContainedIn($key,$value){
 		if(isset($key) && isset($value)){
