@@ -72,7 +72,7 @@ class parseObject extends parseRestClient{
 		$this->data[$field] = $this->dataType('addRelation',$pointer);
 	}
 	
-	public function removeRelation($field,$objectID){
+	public function removeRelation($field,$class,$objectID){
 		$pointer			= array($this->dataType('pointer',array($class,$objectID)));
 		$this->data[$field] = $this->dataType('removeRelation', $pointer);
 	}
