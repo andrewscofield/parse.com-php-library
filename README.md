@@ -1,18 +1,7 @@
 PHP parse.com API library
 ===========================
-More on the parse.com api here: https://www.parse.com/docs/rest
-
-### V1 is still available ###
-Availalbe here: https://github.com/apotropaic/parse.com-php-library/blob/parse.com-php-library_v1/README.md
-
-I wrote tests not for testing sake, but really just to see how I liked how the library worked!
-
-### Feedback Wanted ###
-
-This is a work in progress and is a drasticly different then v1 of this library.
-
-Let me know what you think and suggestions and ideas
-
+### Original Version ###
+Availalbe here: https://github.com/apotropaic/parse.com-php-library
 
 SETUP
 =========================
@@ -27,7 +16,6 @@ Below is what you want parseConfig.php to look like, just fill in your IDs and K
 <?php
 
 class parseConfig{
-	
 	const APPID = '';
 	const MASTERKEY = '';
 	const RESTKEY = '';
@@ -38,31 +26,29 @@ class parseConfig{
 
 ```
 
-
-
 EXAMPLE
 =========================
 
-### sample of upload.php ###
+### Sample of creating a relation ###
 
 ```
 <?php 
-    //This example is a sample video upload stored in parse
-    
-    $parse = new parseObject('Videos');
-    $parse->title = $data['upload_data']['title'];
-    $parse->description = $data['upload_data']['description'];
-    $parse->tags = $data['upload_data']['tags'];
-    
-    //create new geo
-    $geo = new parseGeoPoint($data['upload_data']['lat'],$data['upload_data']['lng']);
-    $parse->location = $geo->location;
-    
-    //use pointer to other class
-    $parse->userid = array("__type" => "Pointer", "className" => "_User", "objectId" => $data['upload_data']['userid']);
-    
-    //create acl
-    $parse->ACL = array("*" => array("write" => true, "read" => true));
-    $r = $parse->save();
-    ?>
+	// addRelation($field,$class,$objectID);
+
+	// ObjectID is the object ID of the row you would like to become a relation 
+	$relation_objectID	= "ABBBBBBC";
+	// Name of the class where the object ID is found
+	$relation_className	= "Book";
+	// The id of row you would like to update
+	$id					= "BCCCCCCD";
+
+	$parseObject = new parseObject("_User");
+	$parseObject->addRelation('books',$relation_className,$relation_objectID);
+	$parseObject->update($id);
+
+	// For example the above would add the row with the objectID: ABBBBBBC
+	// Found in the Class called: Book
+	// To the class '_User' (the user class) 
+	// With an objectID of: BCCCCCCD in the column called books
+?>
 ```
