@@ -191,6 +191,7 @@ class parseRestClient{
 	}
 
 	public function throwError($msg,$code=0){
+		if($code == "101"){return "101";}
 		throw new ParseLibraryException($msg,$code);
 	}
 
@@ -198,7 +199,7 @@ class parseRestClient{
 		//TODO: Need to also check for response for a correct result from parse.com
 		if(!in_array($responseCode,$expectedCode)){
 			$error = json_decode($response);
-			$this->throwError($error->error,$error->code);
+			return $this->throwError($error->error,$error->code);
 		}
 		else{
 			//check for empty return
