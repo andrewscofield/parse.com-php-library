@@ -50,21 +50,21 @@ class parseUser extends parseRestClient{
 	
 	}
 
-public function socialLogin(){
-	if(!empty($this->authData)){
-		$request = $this->request( array(
-			'method' => 'POST',
-			'requestUrl' => 'users',
-			'data' => array(
-				'authData' => $this->authData
-			)
-		));
-		return $request;
+	public function socialLogin(){
+		if(!empty($this->authData)){
+			$request = $this->request( array(
+				'method' => 'POST',
+				'requestUrl' => 'users',
+				'data' => array(
+					'authData' => $this->authData
+				)
+			));
+			return $request;
+		}
+		else{
+			$this->throwError('authArray must be set use addAuthData method');
+		}
 	}
-	else{
-		$this->throwError('authArray must be set use addAuthData method');
-	}
-}
 
 	public function get($objectId){
                 if(!empty($this->_includes)){
@@ -180,7 +180,7 @@ public function socialLogin(){
 
 	public function requestPasswordReset($email){
 		if(!empty($email)){
-			$this->email - $email;
+			$this->email = $email;
 			$request = $this->request(array(
 			'method' => 'POST',
 			'requestUrl' => 'requestPasswordReset',
@@ -194,7 +194,7 @@ public function socialLogin(){
 			$this->throwError('email is required for the requestPasswordReset method');
 		}
 
-}
+	}
 
 
 ?>
