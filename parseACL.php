@@ -20,14 +20,13 @@ class parseACL{
 	}
 	private function setAccessForKey($access,$key,$bool){
 		if(!($access == 'read' || $access == 'write')) return;
-		if(is_object($this->acl)) $this->acl = array();
-		if($bool) $this->acl[$key][$access] = true;
+		if($bool) $this->acl->$key->$access = true;
 		else {
-			if(isset($this->acl[$key])){ 
-				unset($this->acl[$key][$access]);
-				if(sizeof($this->acl[$key]) == 0) unset($this->acl[$key]);
+			if(isset($this->acl->$key)){ 
+				unset($this->acl->$key->$access);
+				if(sizeof((array)$this->acl->$key) == 0) unset($this->acl->$key);
 			}
-			if(sizeof($this->acl) == 0) $this->acl = new stdClass();
+			if(sizeof((array)$this->acl) == 0) $this->acl = new stdClass();
 		}
 	}
 	public function setPublicReadAccess($bool){
