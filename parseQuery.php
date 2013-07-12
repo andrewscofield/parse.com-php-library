@@ -156,7 +156,7 @@ class parseQuery extends parseRestClient{
         public function whereLessThanDate($key,$date){
 		if(isset($key) && isset($date)){
 			$this->_query[$key] = array(
-				'$gt' => $this->dataType('date', $date)
+				'$lt' => $this->dataType('date', $date)
 			);
 		}	
 		else{
