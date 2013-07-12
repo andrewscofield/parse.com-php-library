@@ -1,7 +1,7 @@
 <?php
 
 class parseUser extends parseRestClient{
-
+	public $_includes = array();
 	public $authData;
 
 	public function __set($name,$value){
@@ -50,23 +50,27 @@ class parseUser extends parseRestClient{
 	
 	}
 
-public function socialLogin(){
-	if(!empty($this->authData)){
-		$request = $this->request( array(
-			'method' => 'POST',
-			'requestUrl' => 'users',
-			'data' => array(
-				'authData' => $this->authData
-			)
-		));
-		return $request;
+	public function socialLogin(){
+		if(!empty($this->authData)){
+			$request = $this->request( array(
+				'method' => 'POST',
+				'requestUrl' => 'users',
+				'data' => array(
+					'authData' => $this->authData
+				)
+			));
+			return $request;
+		}
+		else{
+			$this->throwError('authArray must be set use addAuthData method');
+		}
 	}
-	else{
-		$this->throwError('authArray must be set use addAuthData method');
-	}
-}
 
 	public function get($objectId){
+                if(!empty($this->_includes)){
+                        $request['include'] = implode(',', $this->_includes);
+                }
+                
 		if($objectId != ''){
 			$request = $this->request(array(
 				'method' => 'GET',
@@ -163,9 +167,20 @@ public function socialLogin(){
 
 	}
 
+	public function addInclude($name){
+		$this->_includes[] = $name;
+	}
+
+    public function ACL($acl = null) {
+        if($acl)
+            $this->data['ACL'] = $acl;
+        
+        return $this->data['ACL'];
+    }	
+
 	public function requestPasswordReset($email){
 		if(!empty($email)){
-			$this->email - $email;
+			$this->email = $email;
 			$request = $this->request(array(
 			'method' => 'POST',
 			'requestUrl' => 'requestPasswordReset',
@@ -179,9 +194,6 @@ public function socialLogin(){
 			$this->throwError('email is required for the requestPasswordReset method');
 		}
 
+	}
 }
-
-	
-}
-
 ?>

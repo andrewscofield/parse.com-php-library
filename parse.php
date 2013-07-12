@@ -1,5 +1,4 @@
 <?php
-include 'parseConfig.php';
 include 'parseObject.php';
 include 'parseQuery.php';
 include 'parseUser.php';
@@ -7,10 +6,11 @@ include 'parseFile.php';
 include 'parsePush.php';
 include 'parseGeoPoint.php';
 include 'parseACL.php';
+include 'parseRole.php';
 include 'parseCloud.php';
 
 class parseRestClient{
-
+     
 	private $_appid = '';
 	private $_masterkey = '';
 	private $_restkey = '';
@@ -23,9 +23,9 @@ class parseRestClient{
 	public function __construct(){
 		$parseConfig = new parseConfig;
 		$this->_appid = $parseConfig::APPID;
-    	$this->_masterkey = $parseConfig::MASTERKEY;
-    	$this->_restkey = $parseConfig::RESTKEY;
-    	$this->_parseurl = $parseConfig::PARSEURL;
+        	$this->_masterkey = $parseConfig::MASTERKEY;
+        	$this->_restkey = $parseConfig::RESTKEY;
+                $this->_parseurl = $parseConfig::PARSEURL;
 
 		if(empty($this->_appid) || empty($this->_restkey) || empty($this->_masterkey)){
 			$this->throwError('You must set your Application ID, Master Key and REST API Key');
@@ -144,6 +144,12 @@ class parseRestClient{
 						"objectId" => $params[1]
 					);			
 					break;
+                                case 'relatedTo':
+                                        $return = array(
+                                            "object" => $params[0], // pointer
+                                            "key" => $params[1] // key
+                                        );
+                                        break;
 				case 'geopoint':
 					$return = array(
 						"__type" => "GeoPoint",

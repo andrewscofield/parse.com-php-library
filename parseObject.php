@@ -2,7 +2,7 @@
 
 class parseObject extends parseRestClient{
 	public $_includes = array();
-	private $_className = '';
+	protected $_className = '';
 
 	public function __construct($class=''){
 		if($class != ''){
@@ -21,6 +21,27 @@ class parseObject extends parseRestClient{
 		}
 	}
 
+        public function setClassName($className) {
+            $this->_className = $className;
+        }
+        
+        public function ACL($acl = null) {
+            if($acl)
+                $this->data['ACL'] = $acl;
+            
+            return $this->data['ACL'];
+        }
+
+        public function setProperty($name, $value) {
+		if($name != '_className'){
+			$this->data[$name] = $value;
+		}
+        }
+
+        public function getProperty($name) {
+            return $this->data[$name];
+        }
+        
 	public function save(){
 		if(count($this->data) > 0 && $this->_className != ''){
 			$request = $this->request(array(
@@ -78,7 +99,7 @@ class parseObject extends parseRestClient{
 			return $request;
 		}		
 	}
-
+        
 	public function addInclude($name){
 		$this->_includes[] = $name;
 	}
