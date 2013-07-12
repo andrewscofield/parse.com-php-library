@@ -21,6 +21,10 @@ class parseObject extends parseRestClient{
 		}
 	}
 
+        public function setClassName($className) {
+            $this->_className = $className;
+        }
+        
         public function ACL($acl = null) {
             if($acl)
                 $this->data['ACL'] = $acl;
