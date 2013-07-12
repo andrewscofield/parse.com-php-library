@@ -50,6 +50,22 @@ class parseUser extends parseRestClient{
 	
 	}
 
+public function socialLogin(){
+	if(!empty($this->authData)){
+		$request = $this->request( array(
+			'method' => 'POST',
+			'requestUrl' => 'users',
+			'data' => array(
+				'authData' => $this->authData
+			)
+		));
+		return $request;
+	}
+	else{
+		$this->throwError('authArray must be set use addAuthData method');
+	}
+}
+
 	public function get($objectId){
                 if(!empty($this->_includes)){
                         $request['include'] = implode(',', $this->_includes);
@@ -69,7 +85,7 @@ class parseUser extends parseRestClient{
 		}
 		
 	}
-
+	//TODO: should make the parseUser contruct accept the objectId and update and delete would only require the sessionToken
 	public function update($objectId,$sessionToken){
 		if(!empty($objectId) || !empty($sessionToken)){
 			$request = $this->request(array(
@@ -150,18 +166,35 @@ class parseUser extends parseRestClient{
 		}		
 
 	}
-        
+
 	public function addInclude($name){
 		$this->_includes[] = $name;
 	}
 
-        public function ACL($acl = null) {
-            if($acl)
-                $this->data['ACL'] = $acl;
-            
-            return $this->data['ACL'];
-        }
+    public function ACL($acl = null) {
+        if($acl)
+            $this->data['ACL'] = $acl;
+        
+        return $this->data['ACL'];
+    }	
+
+	public function requestPasswordReset($email){
+		if(!empty($email)){
+			$this->email - $email;
+			$request = $this->request(array(
+			'method' => 'POST',
+			'requestUrl' => 'requestPasswordReset',
+			'email' => $email,
+			'data' => $this->data
+			));
+
+			return $request;
+		}
+		else{
+			$this->throwError('email is required for the requestPasswordReset method');
+		}
 
 }
+
 
 ?>

@@ -7,6 +7,7 @@ include 'parsePush.php';
 include 'parseGeoPoint.php';
 include 'parseACL.php';
 include 'parseRole.php';
+include 'parseCloud.php';
 
 class parseRestClient{
     public static $APPID;
@@ -32,6 +33,14 @@ class parseRestClient{
 		if(empty($this->_appid) || empty($this->_restkey) || empty($this->_masterkey)){
 			$this->throwError('You must set your Application ID, Master Key and REST API Key');
 		}
+
+		$version = curl_version();
+		$ssl_supported = ( $version['features'] & CURL_VERSION_SSL );
+
+		if(!$ssl_supported){
+			$this->throwError('CURL ssl support not found');	
+		}
+
 	}
 
 	/*
@@ -98,17 +107,21 @@ class parseRestClient{
 		$response = curl_exec($c);
 		$responseCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 
-		$expectedCode = '200';
+		$expectedCode = array('200');
 		if($args['method'] == 'POST' && substr($args['requestUrl'],0,4) != 'push'){
-			$expectedCode = '201';
+			// checking if it is not cloud code - it returns code 200
+			if(substr($args['requestUrl'],0,9) != 'functions'){
+				$expectedCode = array('200','201');
+			}
 		}
-		
-		if($expectedCode != $responseCode){
-			//BELOW HELPS WITH DEBUGGING
+
+		//BELOW HELPS WITH DEBUGGING		
+		/*
+		if(!in_array($responseCode,$expectedCode)){
 			//print_r($response);
 			//print_r($args);		
 		}
-		
+		*/
 		return $this->checkResponse($response,$responseCode,$expectedCode);
 	}
 
@@ -180,7 +193,7 @@ class parseRestClient{
 
 	private function checkResponse($response,$responseCode,$expectedCode){
 		//TODO: Need to also check for response for a correct result from parse.com
-		if($responseCode != $expectedCode){
+		if(!in_array($responseCode,$expectedCode)){
 			$error = json_decode($response);
 			$this->throwError($error->error,$error->code);
 		}
