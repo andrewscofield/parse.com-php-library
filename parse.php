@@ -10,11 +10,7 @@ include 'parseRole.php';
 include 'parseCloud.php';
 
 class parseRestClient{
-    public static $APPID;
-    public static $MASTERKEY;
-    public static $RESTKEY;
-    public static $PARSEURL;
-    
+     
 	private $_appid = '';
 	private $_masterkey = '';
 	private $_restkey = '';
@@ -25,10 +21,11 @@ class parseRestClient{
 	public $returnData = '';
 
 	public function __construct(){
-		$this->_appid = parseRestClient::$APPID;
-                $this->_masterkey = parseRestClient::$MASTERKEY;
-                $this->_restkey = parseRestClient::$RESTKEY;
-                $this->_parseurl = parseRestClient::$PARSEURL;
+		$parseConfig = new parseConfig;
+		$this->_appid = $parseConfig::APPID;
+        	$this->_masterkey = $parseConfig::MASTERKEY;
+        	$this->_restkey = $parseConfig::RESTKEY;
+                $this->_parseurl = $parseConfig::PARSEURL;
 
 		if(empty($this->_appid) || empty($this->_restkey) || empty($this->_masterkey)){
 			$this->throwError('You must set your Application ID, Master Key and REST API Key');
