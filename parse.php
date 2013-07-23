@@ -51,6 +51,7 @@ class parseRestClient{
 		curl_setopt($c, CURLOPT_TIMEOUT, 30);
 		curl_setopt($c, CURLOPT_USERAGENT, 'parse.com-php-library/2.0');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($c, CURLINFO_HEADER_OUT, true);
 		if(substr($args['requestUrl'],0,5) == 'files'){
 			curl_setopt($c, CURLOPT_HTTPHEADER, array(
@@ -112,13 +113,16 @@ class parseRestClient{
 			}
 		}
 
+
 		//BELOW HELPS WITH DEBUGGING		
-		/*
-		if(!in_array($responseCode,$expectedCode)){
-			//print_r($response);
-			//print_r($args);		
-		}
-		*/
+
+		// if(!in_array($responseCode,$expectedCode)){
+		// 	print("<pre>");
+		// 	print_r($response);
+		// 	print_r($args);	
+		// 	print("</pre>");
+		// }
+		
 		return $this->checkResponse($response,$responseCode,$expectedCode);
 	}
 
