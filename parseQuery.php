@@ -32,8 +32,7 @@ class parseQuery extends parseRestClient{
 
 			return $request;
 
-		}
-		else{
+		}else{
 			$urlParams = array(
 				'where' => json_encode( $this->_query )
 			);
