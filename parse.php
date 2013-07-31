@@ -117,10 +117,10 @@ class parseRestClient{
 		//BELOW HELPS WITH DEBUGGING		
 
 		// if(!in_array($responseCode,$expectedCode)){
-		// 	print("<pre>");
-		// 	print_r($response);
-		// 	print_r($args);	
-		// 	print("</pre>");
+		 	//print("<pre>");
+		 	//print_r($response);
+		 	//print_r($args);	
+		 	//print("</pre>");
 		// }
 		
 		return $this->checkResponse($response,$responseCode,$expectedCode);

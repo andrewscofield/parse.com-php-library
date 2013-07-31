@@ -195,6 +195,18 @@ class parseQuery extends parseRestClient{
 		}
 	
 	}
+	
+	public function whereGreaterThanAndLessThan($key,$value1,$value2){
+		if(isset($key) && isset($value1) && isset($value2)){
+			$this->_query[$key] = array(
+				'$gte' => $value1,
+				'$lte' => $value2
+			);
+		}	
+		else{
+			$this->throwError('the $key and $value parameters must be set when setting a "where" query method');		
+		}
+	}
 
 	public function whereAll($key,$value){
 		if(isset($key) && isset($value)){
