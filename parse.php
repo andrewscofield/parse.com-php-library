@@ -127,6 +127,7 @@ class parseRestClient{
 	}
 
 	public function dataType($type,$params){
+		date_default_timezone_set("UTC"); 
 		if($type != ''){
 			switch($type){
 				case 'date':
