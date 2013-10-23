@@ -160,13 +160,13 @@ class parseRestClient{
 				case 'increment':
 					$return = array(
 						"__op" => "Increment",
-						"amount" => $params[0]
+						"amount" => $params
 					);
 					break;
 				case 'decrement':
 					$return = array(
 						"__op" => "Decrement",
-						"amount" => $params[0]
+						"amount" => $params
 					);
 					break;
 				default:
