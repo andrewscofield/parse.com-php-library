@@ -63,7 +63,7 @@ class parseObject extends parseRestClient{
 		$this->data[$field] = $this->dataType('increment', $amount);
 	}
 
-	public function decrement($id, $amount){
+	public function decrement($field, $amount){
 		$this->data[$field] = $this->dataType('decrement', $amount);
 	}
 
