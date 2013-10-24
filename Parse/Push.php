@@ -1,6 +1,8 @@
 <?php
+namespace Parse;
 
-class parsePush extends parseRestClient{
+class Push extends RestClient
+{
 
 	public $channels;
 	public $channel;

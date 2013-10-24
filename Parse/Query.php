@@ -1,6 +1,8 @@
 <?php
+namespace Parse;
 
-class parseQuery extends parseRestClient{
+class Query extends RestClient
+{
 	private $_limit = 100;
 	private $_skip = 0;
 	private $_count = 0;

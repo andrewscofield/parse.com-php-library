@@ -1,6 +1,8 @@
 <?php
+namespace Parse;
 
-class parseUser extends parseRestClient{
+class User extends RestClient
+{
 
 	public $authData;
 

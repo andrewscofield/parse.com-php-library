@@ -1,15 +1,10 @@
 <?php
-include 'parseConfig.php';
-include 'parseObject.php';
-include 'parseQuery.php';
-include 'parseUser.php';
-include 'parseFile.php';
-include 'parsePush.php';
-include 'parseGeoPoint.php';
-include 'parseACL.php';
-include 'parseCloud.php';
+namespace Parse;
 
-class parseRestClient{
+use Exception; 
+
+class RestClient
+{
 
 	private $_appid = '';
 	private $_masterkey = '';
@@ -20,8 +15,10 @@ class parseRestClient{
 	public $requestUrl = '';
 	public $returnData = '';
 
-	public function __construct(){
-		$parseConfig = new parseConfig;
+	public function __construct($parseConfig = null){
+		if (!$parseConfig) {
+			$parseConfig = new Config;
+		}
 		$this->_appid = $parseConfig::APPID;
     	$this->_masterkey = $parseConfig::MASTERKEY;
     	$this->_restkey = $parseConfig::RESTKEY;

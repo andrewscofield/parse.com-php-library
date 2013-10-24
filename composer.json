@@ -1,0 +1,26 @@
+{
+    "name": "coderockr/parse",
+    "description": "PHP parse.com API library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Parse.com",
+            "email": "apotropaic@parse.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Elton Minetto",
+            "email": "eminetto@coderockr.com",
+            "homepage": "http://eltonminetto.net/",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "parse"
+    ],
+    "homepage": "http://parse.com/",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    }
+}

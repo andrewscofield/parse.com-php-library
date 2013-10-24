@@ -1,6 +1,8 @@
 <?php
+namespace Parse;
 
-class parseFile extends parseRestClient{
+class File extends RestClient
+{
 
 	private $_fileName;
 	private $_contentType;
