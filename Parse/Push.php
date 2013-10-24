@@ -1,6 +1,8 @@
 <?php
+namespace Parse;
 
-class parsePush extends parseRestClient{
+class Push extends RestClient
+{
 
 	public $channels;
 	public $channel;
@@ -13,12 +15,12 @@ class parsePush extends parseRestClient{
 
 	private $_globalMsg;
 
-	public function __construct($globalMsg=''){
+	public function __construct($parseConfig = null,$globalMsg=''){
 		if($globalMsg != ''){
 			$this->_globalMsg = $globalMsg;
 		}
 		
-		parent::__construct();
+		parent::__construct($parseConfig);
 
 	}
 	

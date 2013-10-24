@@ -1,6 +1,8 @@
 <?php
+namespace Parse;
 
-class parseQuery extends parseRestClient{
+class Query extends RestClient
+{
 	private $_limit = 100;
 	private $_skip = 0;
 	private $_count = 0;
@@ -8,7 +10,7 @@ class parseQuery extends parseRestClient{
 	private $_query = array();
 	private $_include = array();
 
-	public function __construct($class=''){
+	public function __construct($parseConfig = null, $class=''){
 		if($class == 'users' || $class == 'installation'){
 			$this->_requestUrl = $class;
 		}
@@ -19,7 +21,7 @@ class parseQuery extends parseRestClient{
 			$this->throwError('include the className when creating a parseQuery');
 		}
 		
-		parent::__construct();
+		parent::__construct($parseConfig);
 
 	}
 

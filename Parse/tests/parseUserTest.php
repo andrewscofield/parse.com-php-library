@@ -3,9 +3,11 @@ class parseUserTest extends \Enhance\TestFixture {
 	
 	public $parseUser;
 	public $testUser;
+	private $parseConfig;
 	
 	public function setUp(){
-		$this->parseUser = new parseUser;
+		$this->parseConfig = new parseConfig;
+		$this->parseUser = new Parse\User($this->parseConfig);
 		$this->testUser = array(
 			'username' => 'testUser'.rand(),
 			'password' => 'testPass',
@@ -22,7 +24,7 @@ class parseUserTest extends \Enhance\TestFixture {
 
 		//print_r($return);
 
-		$deleteUser = new parseUser;
+		$deleteUser = new Parse\User($this->parseConfig);
 		$deleteUser->delete($return->objectId,$return->sessionToken);
 
 		\Enhance\Assert::isTrue( property_exists($return,'objectId') );
@@ -38,7 +40,7 @@ class parseUserTest extends \Enhance\TestFixture {
 
 		$return = $parseUser->signup();
 
-		$deleteUser = new parseUser;
+		$deleteUser = new Parse\User($this->parseConfig);
 		$deleteUser->delete((string)$return->objectId,(string)$return->sessionToken);
 
 		\Enhance\Assert::isTrue( property_exists($return,'objectId') );
@@ -52,27 +54,27 @@ class parseUserTest extends \Enhance\TestFixture {
 
 		$return = $parseUser->signup();
 
-		$loginUser = new parseUser;
+		$loginUser = new Parse\User($this->parseConfig);
 		$loginUser->username = $this->testUser['username'];
 		$loginUser->password = $this->testUser['password'];
 
 		$returnLogin = $loginUser->login();
 	
-		$deleteUser = new parseUser;
+		$deleteUser = new Parse\User($this->parseConfig);
 		$deleteUser->delete((string)$return->objectId,(string)$return->sessionToken);
 
 		\Enhance\Assert::isTrue( property_exists($returnLogin,'objectId') );
 	}
 
 	public function getUserWithObjectIdExpectUsername(){
-		$testUser = new parseUser;
+		$testUser = new Parse\User($this->parseConfig);
 		$testUser->username = $this->testUser['username'];
 		$testUser->password = $this->testUser['password'];
 
 		//need to clear properties after a call like this to make sure username/password aren't used for the get command below
 		$user = $testUser->signup();
 
-		$parseUser = new parseUser;
+		$parseUser = new Parse\User($this->parseConfig);
 		$return = $parseUser->get($user->objectId);
 
 		\Enhance\Assert::isTrue( property_exists($return,'username') );
@@ -80,7 +82,7 @@ class parseUserTest extends \Enhance\TestFixture {
 
 	public function queryUsersWithQueryExpectResultsKey(){
 		$parseUser = $this->parseUser;
-		$userQuery = new parseQuery('users');
+		$userQuery = new Parse\Query($this->parseConfig, 'users');
 		$userQuery->whereExists('phone');
 		$return = $userQuery->find();
 
@@ -89,7 +91,7 @@ class parseUserTest extends \Enhance\TestFixture {
 	}
 
 	public function deleteWithObjectIdExpectTrue(){
-		$testUser = new parseUser;
+		$testUser = new Parse\User($this->parseConfig);
 		$testUser->username = $this->testUser['username'];
 		$testUser->password = $this->testUser['password'];
 		
@@ -104,13 +106,13 @@ class parseUserTest extends \Enhance\TestFixture {
 	THESE TESTS RETURN ERROR EVERYTIME FROM PARSE BECAUSE OF AN INVALID FACEBOOK ID
 
 	public function linkAccountsWithAddAuthDataExpectTrue(){
-		$testUser = new parseUser;
+		$testUser = new Parse\User($this->parseConfig);
 		$testUser->username = $this->testUser['username'];
 		$testUser->password = $this->testUser['password'];
 		
 		$user = $testUser->signup();
 		
-		$parseUser = new parseUser;
+		$parseUser = new Parse\User($this->parseConfig);
 
 		//These technically don't have to be REAL, unless you want them to actually work :)
 		$parseUser->addAuthData(array(
@@ -146,5 +148,3 @@ class parseUserTest extends \Enhance\TestFixture {
 */
 
 }
-
-?>

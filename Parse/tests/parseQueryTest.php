@@ -6,16 +6,18 @@ class parseQueryTest extends \Enhance\TestFixture {
 	public $parseQueryUser;
 	public $parseObject;
 	public $parseObject2;
+	private $parseConfig;
 	
 	public function setUp(){
+		$this->parseConfig = new parseConfig;
 		//setup test data to query
-		$parseObject = new parseObject('test');
+		$parseObject = new parse\Object($this->parseConfig, 'test');
 		$parseObject->score = 1111;
 		$parseObject->name = 'Foo';
 		$parseObject->mode = 'cheat';
 		$this->parseObject = $parseObject->save();
 		
-		$parseObject2 = new parseObject('test');
+		$parseObject2 = new Parse\Object($this->parseConfig, 'test');
 		$parseObject2->score = 2222;
 		$parseObject2->name = 'Bar';
 		$parseObject2->mode = 'nocheat';
@@ -23,8 +25,8 @@ class parseQueryTest extends \Enhance\TestFixture {
 		$parseObject2->object1 = $parseObject2->dataType('pointer', array('test',$this->parseObject->objectId));
 		$this->parseObject2 = $parseObject2->save();
 
-		$this->parseQuery = \Enhance\Core::getCodeCoverageWrapper('parseQuery', array('test'));
-		$this->parseQueryUser = \Enhance\Core::getCodeCoverageWrapper('parseQuery', array('users'));
+		$this->parseQuery = \Enhance\Core::getCodeCoverageWrapper('Parse\Query', array($this->parseConfig, 'test'));
+		$this->parseQueryUser = \Enhance\Core::getCodeCoverageWrapper('Parse\Query', array($this->parseConfig, 'users'));
 		
 	}
 	
@@ -136,8 +138,4 @@ class parseQueryTest extends \Enhance\TestFixture {
 		\Enhance\Assert::isTrue( is_array($return->results) );
 	}
 
-	
-
-
 }
-?>

@@ -1,18 +1,20 @@
 <?php
+namespace Parse;
 
-class parseObject extends parseRestClient{
+class Object extends RestClient
+{
 	public $_includes = array();
 	private $_className = '';
 
-	public function __construct($class=''){
+	public function __construct($parseConfig = null, $class = ''){
 		if($class != ''){
 			$this->_className = $class;
 		}
 		else{
-			$this->throwError('include the className when creating a parseObject');
+			$this->throwError('include the className when creating a Object');
 		}
 
-		parent::__construct();
+		parent::__construct($parseConfig);
 	}
 
 	public function __set($name,$value){

@@ -1,11 +1,12 @@
 <?php
+namespace Parse;
 /* 
 // example: 
-$object = new parseObject();
+$object = new Object();
 $object->__set('hello','world');
 
 // This instantiates a ACL object with NO rights! 
-$acl = new parseACL();
+$acl = new ACL();
 $acl->setPublicReadAccess(false);
 $acl->setReadAccessForId('user_id',true);
 $acl->setWriteAccessForRole('role_name',true);
@@ -13,7 +14,8 @@ $acl->setWriteAccessForRole('role_name',true);
 $object->ACL($acl);
 $object->save();
 */
-class parseACL{
+class ACL
+{
 	public $acl;
 	public function __construct(){
 		$this->acl = new stdClass();
