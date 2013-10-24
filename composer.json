@@ -20,6 +20,10 @@
     ],
     "homepage": "http://parse.com/",
     "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": { "Parse\\": "" }
+    },
+    "target-dir": "Parse",
     "require": {
         "php": ">=5.3.3"
     }
