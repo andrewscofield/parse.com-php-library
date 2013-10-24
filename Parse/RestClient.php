@@ -17,7 +17,7 @@ class RestClient
 
 	public function __construct($parseConfig = null){
 		if (!$parseConfig) {
-			$parseConfig = new Config;
+			$parseConfig = new parseConfig;
 		}
 		$this->_appid = $parseConfig::APPID;
     	$this->_masterkey = $parseConfig::MASTERKEY;
@@ -116,6 +116,7 @@ class RestClient
 			//print_r($args);		
 		}
 		*/
+	
 		return $this->checkResponse($response,$responseCode,$expectedCode);
 	}
 

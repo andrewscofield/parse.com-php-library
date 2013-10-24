@@ -15,7 +15,7 @@ class Cloud extends RestClient
 	public $_options;
 	private $_functionName = '';
 
-	public function __construct($function=''){
+	public function __construct($parseConfig = null,$function=''){
 		$this->_options = array();
 		if($function != ''){
 			$this->_functionName = $function; 
@@ -24,7 +24,7 @@ class Cloud extends RestClient
 			$this->throwError('include the functionName when creating a parseCloud');
 		}
 
-		parent::__construct();
+		parent::__construct($parseConfig);
 	}
 
 	public function __set($name,$value){

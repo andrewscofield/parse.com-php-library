@@ -10,7 +10,7 @@ class Query extends RestClient
 	private $_query = array();
 	private $_include = array();
 
-	public function __construct($class=''){
+	public function __construct($parseConfig = null, $class=''){
 		if($class == 'users' || $class == 'installation'){
 			$this->_requestUrl = $class;
 		}
@@ -21,7 +21,7 @@ class Query extends RestClient
 			$this->throwError('include the className when creating a parseQuery');
 		}
 		
-		parent::__construct();
+		parent::__construct($parseConfig);
 
 	}
 

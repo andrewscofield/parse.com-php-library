@@ -15,12 +15,12 @@ class Push extends RestClient
 
 	private $_globalMsg;
 
-	public function __construct($globalMsg=''){
+	public function __construct($parseConfig = null,$globalMsg=''){
 		if($globalMsg != ''){
 			$this->_globalMsg = $globalMsg;
 		}
 		
-		parent::__construct();
+		parent::__construct($parseConfig);
 
 	}
 	

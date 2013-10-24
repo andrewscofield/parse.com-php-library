@@ -7,13 +7,13 @@ class File extends RestClient
 	private $_fileName;
 	private $_contentType;
 
-	public function __construct($contentType='',$data=''){
+	public function __construct($parseConfig = null, $contentType='',$data=''){
 		if($contentType != '' && $data !=''){
 			$this->_contentType = $contentType;
 			$this->data = $data;
 		}
 		
-		parent::__construct();
+		parent::__construct($parseConfig);
 
 	}
 
