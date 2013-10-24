@@ -1,18 +1,21 @@
 <?php
 class parsePushTest extends \Enhance\TestFixture {
 
+	private $parseConfig;
+
 	public function setUp(){
+		$this->parseConfig = new parseConfig;
 	}
 
 	public function sendWithGlobalMessageExpectTrue(){
-		$parsePush = \Enhance\Core::getCodeCoverageWrapper('parsePush', array( 'Global message to be sent out right away' ));
+		$parsePush = \Enhance\Core::getCodeCoverageWrapper('Parse\Push', array( $this->parseConfig, 'Global message to be sent out right away' ));
 		$return = $parsePush->send();
 				
 		\Enhance\Assert::isTrue( $return );
 	}
 
 	public function sendWithDataExpectTrue(){
-		$parsePush = \Enhance\Core::getCodeCoverageWrapper('parsePush');
+		$parsePush = \Enhance\Core::getCodeCoverageWrapper('Parse\Push', array($this->parseConfig));
 
 		//$parsePush->channel = 'TEST_CHANNEL_ONE'; //this or channels required
 		$parsePush->channels = array('TEST_CHANNEL_ONE','TEST_CHANNEL_TWO'); //this or just channel required
