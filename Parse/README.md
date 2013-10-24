@@ -17,7 +17,15 @@ Let me know what you think and suggestions and ideas
 SETUP
 =========================
 
-**Instructions** after cloning this repository you have to create a file in the root of it called **parseConfig.php**
+**Instructions** 
+
+To install using Composer you need to execute:
+
+```
+php composer.phar require coderockr/parse:dev-master
+```
+
+After installing you have to create a file in the root of it called **parseConfig.php**
 
 ### sample of parseConfig.php ###
 
@@ -39,7 +47,6 @@ class parseConfig{
 ```
 
 
-
 EXAMPLE
 =========================
 
@@ -47,15 +54,19 @@ EXAMPLE
 
 ```
 <?php 
+    use Parse\Object;
+    use Parse\GeoPoint;
+
     //This example is a sample video upload stored in parse
-    
-    $parse = new parseObject('Videos');
+    $parseConfig = new parseConfig;
+
+    $parse = new Object($parseConfig, 'Videos');
     $parse->title = $data['upload_data']['title'];
     $parse->description = $data['upload_data']['description'];
     $parse->tags = $data['upload_data']['tags'];
     
     //create new geo
-    $geo = new parseGeoPoint($data['upload_data']['lat'],$data['upload_data']['lng']);
+    $geo = new GeoPoint($parseConfig, $data['upload_data']['lat'],$data['upload_data']['lng']);
     $parse->location = $geo->location;
     
     //use pointer to other class
