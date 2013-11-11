@@ -197,6 +197,18 @@ class parseQuery extends parseRestClient{
 	
 	}
 
+	public function whereBetweenOrEqualTo($key, $startValue, $endValue){
+		if(isset($key) && isset($startValue) && isset($endValue)){
+			$this->_query[$key] = array(
+				'$gte' => $startValue,
+				'$lte' => $endValue
+			);
+		}	
+		else{
+			$this->throwError('the $key, $startValue and $endValue parameters must be set when setting a "where" query method');		
+		}
+	}
+
 	public function whereAll($key,$value){
 		if(isset($key) && isset($value)){
 			if(is_array($value)){
