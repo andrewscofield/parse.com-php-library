@@ -77,6 +77,7 @@ class parseRestClient{
 			));	
 		}
 		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $args['method']);
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
 		$url = $this->_parseurl . $args['requestUrl'];
 
 		if($args['method'] == 'PUT' || $args['method'] == 'POST'){
