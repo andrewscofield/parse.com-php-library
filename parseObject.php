@@ -34,14 +34,16 @@ class parseObject extends parseRestClient{
 
 	public function get($id){
 		if($this->_className != '' || !empty($id)){
+			$urlParams = array();
+			if(!empty($this->_includes)){
+				$urlParams['include'] = implode(',',$this->_includes);
+			}
+			
 			$request = $this->request(array(
 				'method' => 'GET',
-				'requestUrl' => 'classes/'.$this->_className.'/'.$id
+				'requestUrl' => 'classes/'.$this->_className.'/'.$id,
+				'urlParams' => $urlParams
 			));
-			
-			if(!empty($this->_includes)){
-				$request['include'] = implode(',', $this->_includes);
-			}
 			
 			return $request;
 		}
