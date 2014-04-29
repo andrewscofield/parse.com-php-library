@@ -8,6 +8,7 @@ include 'parsePush.php';
 include 'parseGeoPoint.php';
 include 'parseACL.php';
 include 'parseCloud.php';
+include 'parseBatch.php';
 
 class parseRestClient{
 
