@@ -1,4 +1,5 @@
 <?php
+include_once 'parse.php';
 /*
 	// Adding the possibility to run parse cloud code functions
 	$cloud = new parseCloud("functionName");

@@ -1,4 +1,6 @@
 <?php
+include_once 'parse.php';
+include_once 'parseObject.php';
 /*
  *	Example Usage:
        //NOTES: In Parse.com, create "TestBatch" class, then 1 column names "Notes", and 2 rows.

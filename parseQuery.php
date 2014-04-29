@@ -1,5 +1,5 @@
 <?php
-
+include_once 'parse.php';
 class parseQuery extends parseRestClient{
 	private $_limit = 100;
 	private $_skip = 0;
