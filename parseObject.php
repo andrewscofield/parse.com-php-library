@@ -1,5 +1,5 @@
 <?php
-
+include_once 'parse.php';
 class parseObject extends parseRestClient{
 	public $_includes = array();
 	private $_className = '';

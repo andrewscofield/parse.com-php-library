@@ -1,4 +1,5 @@
 <?php
+include_once 'parse.php';
 /* 
 // example: 
 $object = new parseObject();
