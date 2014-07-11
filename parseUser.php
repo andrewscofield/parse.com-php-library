@@ -165,7 +165,7 @@ public function socialLogin(){
 
 	public function requestPasswordReset($email){
 		if(!empty($email)){
-			$this->email - $email;
+			$this->email = $email;
 			$request = $this->request(array(
 			'method' => 'POST',
 			'requestUrl' => 'requestPasswordReset',
