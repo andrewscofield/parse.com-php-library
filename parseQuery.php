@@ -24,7 +24,7 @@ class parseQuery extends parseRestClient{
 	}
 
 	public function find(){
-		if(empty($this->_query)){
+		if(empty($this->_query) && !empty($this->_order)) {
 			$request = $this->request(array(
 				'method' => 'GET',
 				'requestUrl' => $this->_requestUrl
