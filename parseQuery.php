@@ -24,7 +24,8 @@ class parseQuery extends parseRestClient{
 	}
 
 	public function find(){
-		if(empty($this->_query) && !empty($this->_order)) {
+		if(empty($this->_query) && count($this->_order) === 0) {
+
 			$request = $this->request(array(
 				'method' => 'GET',
 				'requestUrl' => $this->_requestUrl
@@ -37,6 +38,12 @@ class parseQuery extends parseRestClient{
 			$urlParams = array(
 				'where' => json_encode( $this->_query )
 			);
+
+			// Remove where clause if it is not required
+			if(empty($this->_query)) {
+				$urlParams = array();
+			}
+
 			if(!empty($this->_include)){
 				$urlParams['include'] = implode(',',$this->_include);
 			}
@@ -52,6 +59,8 @@ class parseQuery extends parseRestClient{
 			if($this->_count == 1){
 				$urlParams['count'] = '1';
 			}
+
+			print_r($urlParams);
 
 			$request = $this->request(array(
 				'method' => 'GET',
